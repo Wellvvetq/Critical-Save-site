@@ -29,12 +29,55 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <script>
     (function() {
-      const saved = localStorage.getItem('cs_theme');
-      if (saved === 'light' || saved === 'dark') {
-        document.documentElement.setAttribute('data-theme', saved);
+      // 1. Theme initialization
+      const savedTheme = localStorage.getItem('cs_theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', savedTheme);
       } else {
         const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
         document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+      }
+
+      // 2. Language Auto-Detection for First-Time Visitors (RU/CIS vs Global)
+      // Priority: Stored manual preference -> Current explicit URL -> Browser languages -> Fallback (EN)
+      try {
+        const userChoice = localStorage.getItem('cs_user_lang');
+        const pathname = window.location.pathname;
+        const isRoot = pathname === '/' || pathname.endsWith('/index.html') && !pathname.includes('/en/') && !pathname.includes('/ru/');
+        
+        // Helper to check if a locale matches Russian / CIS region
+        const isRuRegion = (loc) => {
+          if (!loc) return false;
+          const l = loc.toLowerCase();
+          return l.startsWith('ru') || l.startsWith('be') || l.startsWith('kk') || 
+                 l.startsWith('ky') || l.startsWith('tg') || l.startsWith('uz') || 
+                 l.includes('-ru') || l.includes('-by') || l.includes('-kz');
+        };
+
+        let detectedLang = 'en';
+        if (userChoice === 'ru' || userChoice === 'en') {
+          detectedLang = userChoice;
+        } else {
+          // Detect from browser languages list and primary navigator language
+          const langs = navigator.languages || [navigator.language || navigator.userLanguage || ''];
+          for (let i = 0; i < langs.length; i++) {
+            if (isRuRegion(langs[i])) {
+              detectedLang = 'ru';
+              break;
+            }
+          }
+        }
+
+        // Only auto-redirect on neutral root entry without overriding explicit subpage URLs
+        if (isRoot) {
+          const basePath = pathname.includes('/Critical-Save-site') ? '/Critical-Save-site' : '';
+          const targetUrl = basePath + '/' + detectedLang + '/';
+          if (pathname !== targetUrl) {
+            window.location.replace(targetUrl);
+          }
+        }
+      } catch (e) {
+        // Safe fallback in restricted environments
       }
     })();
   </script>

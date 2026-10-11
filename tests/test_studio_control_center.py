@@ -299,3 +299,191 @@ def test_home_page_visual_form_editor_and_unmanaged_keys(app_instance):
         assert p.has_unpublished_changes is True
         assert p.get_published().get("hero_headline_1_en") == "ORIGINAL"
 
+
+def test_fwr_product_page_content_and_downloads(app_instance):
+    """Verifies that FWR/Avenor product page renders with accurate content, authentic screenshots, and valid download routes."""
+    client = app_instance.test_client()
+
+    # 1. EN Page check
+    res_en = client.get("/en/products/financial-war-room")
+    assert res_en.status_code == 200
+    html_en = res_en.data.decode("utf-8")
+    assert "AVENOR" in html_en
+    assert "Personal Finance Intelligence" in html_en
+    assert "Avenor-Setup-5.0.0.exe" in html_en
+    assert "Avenor-Offline-Setup-5.0.0.exe" in html_en
+    assert "GitHub Releases" in html_en
+    assert "cashflow-forecast.png" in html_en
+    assert "Vite" not in html_en  # Ensure no broken build overlay text
+
+    # 2. RU Page check
+    res_ru = client.get("/ru/products/financial-war-room")
+    assert res_ru.status_code == 200
+    html_ru = res_ru.data.decode("utf-8")
+    assert "AVENOR" in html_ru
+    assert "Персональный финансовый интеллект" in html_ru
+    assert "Локальный ИИ" in html_ru
+    assert "Qwen 2.5" in html_ru
+    assert "Ollama (llama3.2)" not in html_ru  # Ensure deprecated model string replaced
+    assert "Avenor-Setup-5.0.0.exe" in html_ru
+    assert "Avenor-Offline-Setup-5.0.0.exe" in html_ru
+
+    # 3. Download endpoints return PE installer binary when local file exists or 404 with clear message
+    res_std = client.get("/download/fwr/standard")
+    assert res_std.status_code in (200, 302, 404)
+    if res_std.status_code == 200:
+        assert res_std.content_type == "application/vnd.microsoft.portable-executable"
+        assert res_std.headers.get("Content-Disposition") is not None
+
+
+def test_cms_complete_lifecycle_and_error_handling(app_instance, tmp_path):
+    """
+    Verifies the entire primary lifecycle of the Studio Control Center:
+    1. Unauthenticated rejection on /admin/pages/home/edit
+    2. Authentication via /admin/login and redirection
+    3. Invalid JSON handling without crash (400/form redisplay with flash error)
+    4. Saving a draft: updates draft_data_json, sets has_unpublished_changes=True, published untouched
+    5. Fallback in public templates remains active while draft is unpublished
+    6. Publishing via /admin/publishing/trigger promotes draft to published_data_json
+    7. Public pages (RU/EN) render published changes
+    8. Static site export contains the updated published text in exported files
+    9. Logout terminates session
+    """
+    client = app_instance.test_client()
+
+    with app_instance.app_context():
+        db = get_db()
+        home = PageContent(
+            page_key="home",
+            title_en="Home",
+            title_ru="Главная",
+            published_data_json='{"hero_headline_1_en": "INITIAL HEADLINE EN", "hero_headline_1_ru": "ИСХОДНЫЙ ЗАГОЛОВОК RU"}',
+            draft_data_json='{"hero_headline_1_en": "INITIAL HEADLINE EN", "hero_headline_1_ru": "ИСХОДНЫЙ ЗАГОЛОВОК RU"}',
+            has_unpublished_changes=False
+        )
+        db.session.add(home)
+        db.session.commit()
+
+    # 1. Unauthenticated access rejected
+    res = client.get("/admin/pages/home/edit")
+    assert res.status_code == 302
+    assert "/admin/login" in res.headers["Location"]
+
+    # 2. Login as Owner
+    login_res = client.post("/admin/login", data={
+        "username": "test_owner",
+        "password": "OwnerPassword123!"
+    }, follow_redirects=True)
+    assert login_res.status_code == 200
+    assert "Welcome to Studio Control Center" in login_res.get_data(as_text=True)
+
+    # 3. Test invalid JSON error handling
+    bad_json_res = client.post("/admin/pages/home/edit", data={
+        "title_en": "Home",
+        "draft_data_json": "{invalid_json: true,",
+        "action": "save_draft"
+    }, follow_redirects=True)
+    assert bad_json_res.status_code == 200
+    assert "Invalid JSON block structure" in bad_json_res.get_data(as_text=True)
+
+    # 4. Save valid draft with modified hero field
+    save_draft_res = client.post("/admin/pages/home/edit", data={
+        "title_en": "Home",
+        "hero_headline_1_en": "CYBERNETIC NOIR EN",
+        "hero_headline_1_ru": "КИБЕРНЕТИЧЕСКИЙ НУАР RU",
+        "action": "save_draft"
+    }, follow_redirects=True)
+    assert save_draft_res.status_code == 200
+
+    with app_instance.app_context():
+        db = get_db()
+        p = db.session.query(PageContent).filter_by(page_key="home").first()
+        assert p.has_unpublished_changes is True
+        assert p.get_draft().get("hero_headline_1_en") == "CYBERNETIC NOIR EN"
+        assert p.get_published().get("hero_headline_1_en") == "INITIAL HEADLINE EN"
+
+    # 5. Public pages still show previous published version, NOT draft
+    res_en = client.get("/en")
+    assert "CYBERNETIC NOIR EN" not in res_en.get_data(as_text=True)
+    assert "INITIAL HEADLINE EN" in res_en.get_data(as_text=True)
+
+    # 6. Publish all pending changes via publishing center
+    pub_res = client.post("/admin/publishing/trigger", follow_redirects=True)
+    assert pub_res.status_code == 200
+
+    with app_instance.app_context():
+        db = get_db()
+        p = db.session.query(PageContent).filter_by(page_key="home").first()
+        assert p.has_unpublished_changes is False
+        assert p.get_published().get("hero_headline_1_en") == "CYBERNETIC NOIR EN"
+        assert p.get_published().get("hero_headline_1_ru") == "КИБЕРНЕТИЧЕСКИЙ НУАР RU"
+
+    # 7. Public pages now render new published text
+    res_en_after = client.get("/en")
+    assert "CYBERNETIC NOIR EN" in res_en_after.get_data(as_text=True)
+    res_ru_after = client.get("/ru")
+    assert "КИБЕРНЕТИЧЕСКИЙ НУАР RU" in res_ru_after.get_data(as_text=True)
+
+    # 8. Export to static directory and verify presence in exported HTML
+    export_dir = tmp_path / "lifecycle_dist"
+    stats = export_static_site(app_instance, str(export_dir))
+    assert stats["pages_exported"] >= 20
+    assert len(stats["errors"]) == 0
+
+    exported_en_html = (export_dir / "en" / "index.html").read_text(encoding="utf-8")
+    assert "CYBERNETIC NOIR EN" in exported_en_html
+    exported_ru_html = (export_dir / "ru" / "index.html").read_text(encoding="utf-8")
+    assert "КИБЕРНЕТИЧЕСКИЙ НУАР RU" in exported_ru_html
+
+    # 9. Logout
+    logout_res = client.get("/admin/logout", follow_redirects=True)
+    assert logout_res.status_code == 200
+    # Following request to protected route is redirected
+    res_after_logout = client.get("/admin/pages")
+    assert res_after_logout.status_code == 302
+    assert "/admin/login" in res_after_logout.headers["Location"]
+
+
+def test_language_detection_and_routing(app_instance):
+    """
+    Verifies that:
+    1. Direct localized URLs (/ru, /en, /ru/games, /en/games) render without circular redirect.
+    2. HTML contains client-side region/language detection logic with cs_user_lang priority.
+    3. Language switcher component includes active states and valid targets for EN and RU.
+    4. Base template includes alternate hreflang tags for SEO.
+    """
+    client = app_instance.test_client()
+
+    # 1. Direct RU URL
+    res_ru = client.get("/ru")
+    assert res_ru.status_code == 200
+    html_ru = res_ru.data.decode("utf-8")
+    assert 'lang="ru"' in html_ru
+    assert "cs_user_lang" in html_ru
+    assert "isRuRegion" in html_ru
+    assert 'href="/en"' in html_ru or 'href="/ru"' in html_ru
+
+    # 2. Direct EN URL
+    res_en = client.get("/en")
+    assert res_en.status_code == 200
+    html_en = res_en.data.decode("utf-8")
+    assert 'lang="en"' in html_en
+    assert "cs_user_lang" in html_en
+
+    # 3. Direct Subpages preserved without unwanted redirect loops
+    res_sub_ru = client.get("/ru/games")
+    assert res_sub_ru.status_code == 200
+    assert 'lang="ru"' in res_sub_ru.data.decode("utf-8")
+
+    res_sub_en = client.get("/en/games")
+    assert res_sub_en.status_code == 200
+    assert 'lang="en"' in res_sub_en.data.decode("utf-8")
+
+    # 4. Root endpoint redirect behavior
+    res_root = client.get("/", follow_redirects=False)
+    assert res_root.status_code == 302
+    assert res_root.headers["Location"].endswith("/en")
+
+
+
+

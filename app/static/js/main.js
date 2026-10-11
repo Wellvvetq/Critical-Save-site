@@ -60,7 +60,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 2. Mobile Menu Toggle & Keyboard Accessibility
+  // 2. Language Switcher Persistence
+  const langButtons = document.querySelectorAll(".lang-btn");
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const href = btn.getAttribute("href") || "";
+      if (href.includes("/ru")) {
+        localStorage.setItem("cs_user_lang", "ru");
+      } else if (href.includes("/en")) {
+        localStorage.setItem("cs_user_lang", "en");
+      }
+    });
+  });
+
+  // 3. Mobile Menu Toggle & Keyboard Accessibility
   const toggleBtn = document.querySelector(".mobile-nav-toggle");
   const navLinks = document.querySelector(".nav-links");
   if (toggleBtn && navLinks) {

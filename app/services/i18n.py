@@ -157,12 +157,12 @@ TRANSLATIONS = {
         "back_home": "Return to HQ",
         "server_error_title": "Critical Anomaly (500)",
         # Financial War Room Product
-        "fwr_title": "Financial War Room",
+        "fwr_title": "Avenor",
         "fwr_subtitle": "Autonomous Personal Financial Intelligence & Cash Flow Defense",
-        "fwr_badge": "Desktop Fintech System · v4.1.0",
+        "fwr_badge": "Desktop Fintech System · v5.0.0",
         "fwr_hero_headline": "First Precise Calculation → Then Projection → Then AI Analysis",
         "fwr_hero_lead": "A deterministic, local-first operational command center for your personal finances, liquidity trajectories, debt eradication, and stress testing with zero cloud dependency.",
-        "fwr_cta_download": "Download v4.1.0",
+        "fwr_cta_download": "Download v5.0.0",
         "fwr_cta_features": "Explore Capabilities",
         "fwr_cta_privacy": "Privacy Architecture",
         "fwr_section_overview": "Product Architecture",
@@ -173,7 +173,7 @@ TRANSLATIONS = {
         "fwr_standard_title": "Standard Edition",
         "fwr_standard_desc": "Recommended for users with network access. Streamlined installer with embedded FastAPI core and full dashboard; fetches local AI weights on initial setup if enabled.",
         "fwr_offline_title": "Offline Edition",
-        "fwr_offline_desc": "Comprehensive standalone package with pre-bundled local runtime assets for true zero-internet startup.",
+        "fwr_offline_desc": "Comprehensive standalone package with pre-bundled local runtime assets and model for true zero-internet startup.",
         "fwr_sha256": "SHA-256 Checksum",
         "fwr_copy_hash": "Copy SHA-256",
         "fwr_copied": "Copied to clipboard!",
@@ -190,7 +190,7 @@ TRANSLATIONS = {
         "fwr_install_guide_title": "Installation Instructions",
         "fwr_install_step1": "1. Download the preferred Windows installer (.exe) below.",
         "fwr_install_step2": "2. Run setup to deploy the Electron shell and embedded FastAPI core.",
-        "fwr_install_step3": "3. Launch Financial War Room. Your local SQLite database initializes instantly.",
+        "fwr_install_step3": "3. Launch Avenor. Your local SQLite database initializes instantly.",
     },
     "ru": {
         "studio_name": "Critical Save Studio",
@@ -351,12 +351,12 @@ TRANSLATIONS = {
         "server_error_desc": "Произошла непредвиденная ошибка на сервере. Инженерный отдел уведомлен.",
         
         # Financial War Room Product
-        "fwr_title": "Financial War Room",
+        "fwr_title": "Avenor",
         "fwr_subtitle": "Автономная система персонального финансового контроля и прогноза ликвидности",
-        "fwr_badge": "Десктопная финтех-система · v4.1.0",
+        "fwr_badge": "Десктопная финтех-система · v5.0.0",
         "fwr_hero_headline": "Сначала точные расчёты → затем прогнозы → потом AI-анализ",
         "fwr_hero_lead": "Детерминированный, local-first операционный командный центр для личных финансов, моделирования денежных потоков, ликвидации долгов и стресс-тестирования без привязки к внешним облакам.",
-        "fwr_cta_download": "Скачать v4.1.0",
+        "fwr_cta_download": "Скачать v5.0.0",
         "fwr_cta_features": "Изучить возможности",
         "fwr_cta_privacy": "Архитектура приватности",
         "fwr_section_overview": "Архитектура продукта",
@@ -367,7 +367,7 @@ TRANSLATIONS = {
         "fwr_standard_title": "Standard Edition",
         "fwr_standard_desc": "Рекомендуется при наличии интернета. Облегчённый инсталлятор со встроенным ядром FastAPI и полным интерфейсом; загружает веса AI при первой настройке (если включено).",
         "fwr_offline_title": "Offline Edition",
-        "fwr_offline_desc": "Автономный пакет с включённым локальным рантаймом для гарантированной работы без интернета с первого запуска.",
+        "fwr_offline_desc": "Автономный пакет с включённым локальным рантаймом и встроенной моделью ИИ для гарантированной работы без интернета с первого запуска.",
         "fwr_sha256": "Контрольная сумма SHA-256",
         "fwr_copy_hash": "Скопировать SHA-256",
         "fwr_copied": "Скопировано в буфер!",
@@ -384,7 +384,7 @@ TRANSLATIONS = {
         "fwr_install_guide_title": "Инструкция по установке",
         "fwr_install_step1": "1. Загрузите подходящий установщик Windows (.exe) ниже.",
         "fwr_install_step2": "2. Запустите установку (инсталлятор развернет оболочку Electron и FastAPI ядро).",
-        "fwr_install_step3": "3. Запустите Financial War Room. Локальная база SQLite инициализируется автоматически.",
+        "fwr_install_step3": "3. Запустите Avenor. Локальная база SQLite инициализируется автоматически.",
     }
 }
 

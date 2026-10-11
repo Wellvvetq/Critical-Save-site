@@ -28,14 +28,14 @@
       <h1 id="fwr-hero-title" class="fwr-noir-title-giant">AVENOR</h1>
       <p class="fwr-noir-title-lead">
         {% if current_lang == 'ru' %}
-          Персональный финансовый интеллект с локальным AI
+          Персональный финансовый интеллект с автономным локальным ИИ
         {% else %}
-          Personal Finance Intelligence with Local AI
+          Personal Finance Intelligence with Autonomous On-Device AI
         {% endif %}
       </p>
       <p class="fwr-noir-title-subdesc">
         {% if current_lang == 'ru' %}
-          Полный контроль над личными финансами, прогноз ликвидности, сценарный анализ и стратегия закрытия долгов — на вашем компьютере, с заботой о конфиденциальности.
+          Полный контроль над личными финансами, прогноз ликвидности, сценарный анализ и стратегия закрытия долгов — на вашем компьютере с нулевой передачей данных в облако.
         {% else %}
           Complete sovereignty over capital runway, liquidity trajectory, debt eradication, and stress testing — directly on your computer with zero cloud telemetry.
         {% endif %}
@@ -74,7 +74,7 @@
       <div class="fwr-matrix-item">
         <div class="matrix-icon">🧠</div>
         <span class="matrix-label">
-          {% if current_lang == 'ru' %}Локальный AI в режиме чтения (Ollama){% else %}Local AI in Read-Only Mode (Ollama){% endif %}
+          {% if current_lang == 'ru' %}Встроенный локальный ИИ (Только чтение){% else %}Embedded Local AI (Read-Only Mode){% endif %}
         </span>
       </div>
       <div class="fwr-matrix-item">
@@ -206,13 +206,13 @@
           <span class="feature-tag">LOCAL INTELLIGENCE</span>
         </div>
         <h3 class="feature-title">
-          {% if current_lang == 'ru' %}Локальный AI-аналитик (Ollama / Heuristics){% else %}Local AI Financial Advisor (Ollama){% endif %}
+          {% if current_lang == 'ru' %}Локальный ИИ-аналитик (Qwen 2.5 On-Device){% else %}Local AI Financial Advisor (Qwen 2.5 On-Device){% endif %}
         </h3>
         <p class="feature-desc">
           {% if current_lang == 'ru' %}
-            Анализ финансовых трендов с помощью локальной нейросети через Ollama (llama3.2). Режим строгого чтения (read-only): ИИ не совершает транзакций и не меняет балансы.
+            Встроенный автономный ИИ-аналитик на базе открытой модели Qwen 2.5 0.5B (GGUF). Работает локально без сторонних сервисов и Ollama. Режим строгого чтения (read-only): ИИ не имеет прав на изменение балансов и счетов.
           {% else %}
-            Local LLM inference via Ollama (llama3.2) or deterministic fallback heuristics. Strict read-only boundaries: AI cannot execute payments or alter ledgers.
+            Embedded on-device AI advisor powered by open-weights Qwen 2.5 0.5B (GGUF). Operates 100% locally with zero external daemons or cloud dependencies. Strict read-only boundaries: zero write or payment authority.
           {% endif %}
         </p>
         <ul class="feature-checklist">
@@ -319,8 +319,8 @@
           <span class="gallery-recon-stamp">[SCREEN // 05]</span>
         </div>
         <figcaption class="gallery-caption">
-          <strong>{% if current_lang == 'ru' %}Локальный AI-советник{% else %}Local AI Financial Advisor{% endif %}</strong>
-          <span>{% if current_lang == 'ru' %}Аналитический ассистент на базе Ollama в изолированной среде{% else %}Ollama-powered intelligence in an isolated local container{% endif %}</span>
+          <strong>{% if current_lang == 'ru' %}Локальный ИИ-помощник{% else %}Local AI Financial Advisor{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Автономный ассистент на базе Qwen 2.5 в режиме строгого чтения{% else %}Autonomous Qwen 2.5 intelligence running strictly in read-only mode{% endif %}</span>
         </figcaption>
       </figure>
 
@@ -389,6 +389,17 @@
             Official verified release builds for <strong>Windows 10 / 11 (64-bit)</strong>. Choose the edition that best fits your workflow.
           {% endif %}
         </p>
+
+        <!-- Static / CDN Release Notice -->
+        <div class="fwr-download-status-banner" style="margin-top: 1.25rem; padding: 0.85rem 1.25rem; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.25); background: rgba(15, 23, 42, 0.7); text-align: center;">
+          <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.5;">
+            {% if current_lang == 'ru' %}
+              📦 <strong>Статус релизов:</strong> Исполняемые файлы публикуются на <a href="https://github.com/Wellvvetq/Critical-Save-site/releases" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline;">GitHub Releases</a>. При локальном запуске сервера Flask скачивание выполняется напрямую.
+            {% else %}
+              📦 <strong>Release Status:</strong> Binary installers are published via <a href="https://github.com/Wellvvetq/Critical-Save-site/releases" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline;">GitHub Releases</a>. On a running Flask server, direct local downloads are streamed.
+            {% endif %}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -409,15 +420,18 @@
 
         <p class="edition-desc">
           {% if current_lang == 'ru' %}
-            Компактный установщик с полным функционалом. Если вы включите локальный AI, модель Llama 3.2 будет загружена при первом запуске через интернет.
+            Компактный установщик с полным функционалом. Если вы включите локальный ИИ, компактная модель Qwen 2.5 (~468 МБ) загрузится автоматически при первом запуске через интернет.
           {% else %}
-            Compact installer with complete functionality. If local AI is enabled, the Llama 3.2 model weights download automatically on first launch.
+            Compact installer with complete functionality. If local AI is enabled, the lightweight Qwen 2.5 model weights (~468 MB) download automatically on first launch.
           {% endif %}
         </p>
 
         <div class="edition-action">
           <a href="{{ meta.standard.download_url }}" class="btn btn-primary btn-block btn-telemetry">
             {% if current_lang == 'ru' %}Скачать Standard ({{ meta.standard.size_mb }}) ↓{% else %}Download Standard ({{ meta.standard.size_mb }}) ↓{% endif %}
+          </a>
+          <a href="https://github.com/Wellvvetq/Critical-Save-site/releases" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-noir-outline btn-block" style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.4rem 0.75rem;">
+            {% if current_lang == 'ru' %}Зеркало на GitHub Releases ↗{% else %}GitHub Releases Mirror ↗{% endif %}
           </a>
           <div class="edition-filename-row">
             <span class="file-label">File:</span>
@@ -458,15 +472,18 @@
 
         <p class="edition-desc">
           {% if current_lang == 'ru' %}
-            Автономный комплект со всеми встроенными компонентами. Работает без интернета сразу после установки, включая полностью изолированные компьютеры.
+            Автономный комплект со всеми встроенными компонентами и предустановленной локальной моделью ИИ. Работает без интернета сразу после установки.
           {% else %}
-            All-in-one standalone bundle with local runtime assets included. Operates with zero internet connection out of the box, ideal for air-gapped workstations.
+            All-in-one standalone bundle with local runtime assets and pre-bundled AI model included. Operates with zero internet connection out of the box.
           {% endif %}
         </p>
 
         <div class="edition-action">
           <a href="{{ meta.offline.download_url }}" class="btn btn-primary btn-software-cta btn-block">
             {% if current_lang == 'ru' %}Скачать Offline ({{ meta.offline.size_mb }}) ↓{% else %}Download Offline ({{ meta.offline.size_mb }}) ↓{% endif %}
+          </a>
+          <a href="https://github.com/Wellvvetq/Critical-Save-site/releases" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-noir-outline btn-block" style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.4rem 0.75rem;">
+            {% if current_lang == 'ru' %}Зеркало на GitHub Releases ↗{% else %}GitHub Releases Mirror ↗{% endif %}
           </a>
           <div class="edition-filename-row">
             <span class="file-label">File:</span>
@@ -504,7 +521,7 @@
             <span class="step-badge">1</span>
             <div class="step-body">
               <strong>{% if current_lang == 'ru' %}Выберите редакцию{% else %}Choose Edition{% endif %}</strong>
-              <p>{% if current_lang == 'ru' %}Standard (154.7 МБ) для повседневной работы или Offline (610.3 МБ) для полной изоляции.{% else %}Standard (154.7 MB) for typical setups or Offline (610.3 MB) for air-gapped machines.{% endif %}</p>
+              <p>{% if current_lang == 'ru' %}Standard ({{ meta.standard.size_mb }}) для повседневной работы или Offline ({{ meta.offline.size_mb }}) для полной изоляции.{% else %}Standard ({{ meta.standard.size_mb }}) for typical setups or Offline ({{ meta.offline.size_mb }}) for air-gapped machines.{% endif %}</p>
             </div>
           </div>
           <div class="instruction-step">
@@ -530,7 +547,7 @@
           </summary>
           <div class="verification-command-box">
             <p>{% if current_lang == 'ru' %}Откройте PowerShell в папке «Загрузки» и выполните:{% else %}Open PowerShell in your Downloads folder and run:{% endif %}</p>
-            <code>Get-FileHash -Algorithm SHA256 .\Financial-War-Room-Setup-4.1.0.exe</code>
+            <code>Get-FileHash -Algorithm SHA256 .\{{ meta.standard.filename }}</code>
             <p class="verification-hint">{% if current_lang == 'ru' %}Результат команды должен совпадать со значением SHA-256 в блоке выше.{% else %}The resulting hash should match the SHA-256 checksum displayed above.{% endif %}</p>
           </div>
         </details>
