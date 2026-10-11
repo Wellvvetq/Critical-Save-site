@@ -13,9 +13,16 @@ def export_static_site(app, output_dir, base_path=""):
     
     :param app: Flask application instance
     :param output_dir: Directory where static site files will be written
-    :param base_path: Optional repository base path (e.g. '/critical_save_studio' or '')
+    :param base_path: Optional repository base path (e.g. '/Critical-Save-site' or '')
     :return: dict with export statistics
     """
+    if not base_path:
+        base_path = os.environ.get("BASE_PATH", "")
+        if not base_path and os.environ.get("GITHUB_REPOSITORY"):
+            repo_part = os.environ.get("GITHUB_REPOSITORY", "").split("/")[-1]
+            if not repo_part.lower().endswith(".github.io"):
+                base_path = repo_part
+
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
     
@@ -86,7 +93,9 @@ def export_static_site(app, output_dir, base_path=""):
                 # Replace root-relative static and page links safely
                 content = re.sub(r'href="/(en|ru|static|sitemap\.xml|robots\.txt)', rf'href="{clean_base}/\1', content)
                 content = re.sub(r'src="/(static)', rf'src="{clean_base}/\1', content)
-                content = re.sub(r'url\("/(static)', rf'url("{clean_base}/\1', content)
+                content = re.sub(r'content="http://localhost/static', rf'content="{clean_base}/static', content)
+                content = re.sub(r'content="/(static)', rf'content="{clean_base}/\1', content)
+                content = re.sub(r'url\((["\']?)/(static)', rf'url(\1{clean_base}/\2', content)
                 
             target_file = out_path / target_rel_path
             target_file.parent.mkdir(parents=True, exist_ok=True)
