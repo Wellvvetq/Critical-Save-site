@@ -37,6 +37,10 @@ jobs:
         run: |
           python -m pytest tests/test_studio_control_center.py tests/test_suite.py -v
 
+      - name: Seed Production Database for Static Freeze
+        run: |
+          python seed_db.py
+
       - name: Freeze & Export Static Critical Noir Site
         run: |
           python -c "from app import create_app; from app.services.static_exporter import export_static_site; app = create_app(); stats = export_static_site(app, 'dist'); print('Build statistics:', stats)"
