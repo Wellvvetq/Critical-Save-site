@@ -1,0 +1,130 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<section class="section about-hero-section">
+  <div class="container">
+    <div class="about-editorial-masthead">
+      <span class="telemetry-marker">[ STUDIO PROFILE // WORLDS BEYOND THE FRAME ]</span>
+      <h1 class="about-giant-headline">{{ t('about_title') }}</h1>
+      <p class="about-lead-statement">{{ t('about_subtitle') }}</p>
+    </div>
+
+    <!-- Panoramic Architectural Studio Concept Art Frame -->
+    <div class="about-hero-media-wrap">
+      <img src="{{ url_for('static', filename='images/artwork/studio-manifesto-desktop.jpg') }}" 
+           alt="Critical Save Studio — Observation Gallery Key Art" 
+           width="1200" height="670" loading="eager">
+    </div>
+
+    <div class="about-manifesto-grid">
+      <!-- Left: Narrative Text Spread -->
+      <div class="manifesto-narrative-col">
+        <div class="narrative-paragraph-lead">
+          <p>{{ t('about_p1') }}</p>
+        </div>
+        <div class="narrative-paragraph-body">
+          <p>{{ t('about_p2') }}</p>
+        </div>
+
+        <div class="manifesto-signature-block">
+          <div class="sig-title">CRITICAL SAVE STUDIO FOUNDRY</div>
+          <div class="sig-coords">SECTOR: 55°45′N 37°37′E // WORLDS BEYOND THE FRAME</div>
+        </div>
+      </div>
+
+      <!-- Right: Technical Telemetry & Studio Metrics -->
+      <div class="manifesto-telemetry-col">
+        <div class="studio-status-terminal">
+          <div class="terminal-hud-header">
+            <span class="terminal-hud-title">[ STUDIO SPECIFICATIONS ]</span>
+            <span class="terminal-hud-dot"></span>
+          </div>
+
+          <div class="terminal-metrics-list">
+            <div class="metric-row">
+              <span class="metric-key">IDENTITY:</span>
+              <span class="metric-val">INDEPENDENT CREATIVE LAB</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-key">METHODOLOGY:</span>
+              <span class="metric-val">HIGH-AUTONOMY / ZERO-CRUNCH</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-key">ENGINE FOCUS:</span>
+              <span class="metric-val">PROPRIETARY SYSTEMS & UNREAL</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-key">AUDIO DESIGN:</span>
+              <span class="metric-val">SPATIAL ACOUSTIC DENSITY</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-key">PRIMARY SECTOR:</span>
+              <span class="metric-val highlight">ORBITAL SECTOR 07</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Foundational Creative Axioms Section -->
+<section class="section about-axioms-section">
+  <div class="container">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker">[ CORE DIRECTIVES // THE THREE PILLARS ]</span>
+        <h2 class="section-title">{{ t('about_philosophy_title') }}</h2>
+      </div>
+    </div>
+
+    <div class="about-pillars-editorial-grid">
+      <div class="about-pillar-card">
+        <div class="pillar-card-head">
+          <span class="pillar-badge">01 // AGENCY</span>
+          <span class="pillar-coord">[DIR-01]</span>
+        </div>
+        <h3 class="pillar-card-title">{{ t('pillar_1_title') }}</h3>
+        <p class="pillar-card-body">{{ t('pillar_1_desc') }}</p>
+        <div class="pillar-border-accent"></div>
+      </div>
+
+      <div class="about-pillar-card">
+        <div class="pillar-card-head">
+          <span class="pillar-badge">02 // SENSES</span>
+          <span class="pillar-coord">[DIR-02]</span>
+        </div>
+        <h3 class="pillar-card-title">{{ t('pillar_2_title') }}</h3>
+        <p class="pillar-card-body">{{ t('pillar_2_desc') }}</p>
+        <div class="pillar-border-accent"></div>
+      </div>
+
+      <div class="about-pillar-card">
+        <div class="pillar-card-head">
+          <span class="pillar-badge">03 // RIGOR</span>
+          <span class="pillar-coord">[DIR-03]</span>
+        </div>
+        <h3 class="pillar-card-title">{{ t('pillar_3_title') }}</h3>
+        <p class="pillar-card-body">{{ t('pillar_3_desc') }}</p>
+        <div class="pillar-border-accent"></div>
+      </div>
+    </div>
+
+    <!-- Direct Collaboration Terminal Callout -->
+    <div class="collaboration-terminal-card">
+      <div class="collab-content">
+        <span class="telemetry-marker">[ ALLIANCE & PUBLISHING DISPATCH ]</span>
+        <h3 class="collab-title">{{ t('about_contact_cta') }}</h3>
+        <p class="collab-desc">
+          We welcome dialogue with publishers, platform holders, co-production partners, and experienced creative engineers.
+        </p>
+      </div>
+      <div class="collab-action">
+        <a href="{{ url_for('public.contact', lang=current_lang) }}" class="btn btn-primary">
+          {{ t('nav_contact') }} →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

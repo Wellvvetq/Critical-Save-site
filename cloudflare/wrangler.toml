@@ -1,0 +1,15 @@
+name = "critical-save-control-center"
+main = "worker.js"
+compatibility_date = "2024-04-01"
+
+# Free-tier serverless control center for Critical Save Studio
+# Zero cost, executes globally on Cloudflare edge
+
+[[d1_databases]]
+binding = "DB"
+database_name = "critical_save_studio_db"
+database_id = "placeholder-d1-database-id"
+
+[vars]
+STUDIO_NAME = "Critical Save Studio"
+ENVIRONMENT = "production"

@@ -1,0 +1,57 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Software Products & Digital Tools{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">Software Products & Digital Tools</h1>
+    <p class="admin-header-subtitle">Manage standalone software offerings, desktop utilities, and feature matrices.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.software_create') }}" class="btn-noir-admin">+ Register Product</a>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Publisher</th>
+        <th>Releases</th>
+        <th>Visibility</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: var(--admin-text-platinum);">{{ product.title_en }}</div>
+            <div style="font-size: 0.78rem; color: var(--admin-text-muted);">Slug: /{{ product.slug }}</div>
+          </td>
+          <td>{{ product.category }}</td>
+          <td style="color: var(--admin-text-silver);">{{ product.publisher }}</td>
+          <td>
+            <span class="badge badge-live">{{ product.releases|length }} Releases</span>
+          </td>
+          <td>
+            <span class="badge {% if product.is_published %}badge-live{% else %}badge-draft{% endif %}">
+              {% if product.is_published %}Published{% else %}Draft{% endif %}
+            </span>
+          </td>
+          <td style="text-align: right;">
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <a href="{{ url_for('admin.software_edit', product_id=product.id) }}" class="btn-noir-secondary" style="padding: 4px 10px; font-size: 0.78rem;">
+                Edit
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

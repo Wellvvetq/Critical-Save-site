@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <rect width="800" height="450" fill="#080a0e" />
+  <rect x="20" y="20" width="760" height="410" fill="none" stroke="#1d222e" stroke-width="1.5" />
+  <!-- Waveform representation of acoustic resonance -->
+  <g stroke="#f59e0b" fill="none">
+    <path d="M 60 225 Q 120 120 180 225 T 300 225 T 420 225 T 540 225 T 660 225 T 740 225" stroke="#f59e0b" stroke-width="2" />
+    <path d="M 60 225 Q 120 170 180 225 T 300 225 T 420 225 T 540 225 T 660 225 T 740 225" stroke="#0ea5e9" stroke-width="1.2" stroke-opacity="0.6" stroke-dasharray="6 4" />
+  </g>
+  <text x="400" y="380" font-family="monospace" font-size="11" fill="#71717a" text-anchor="middle" letter-spacing="2">ACOUSTIC BULKHEAD IMPULSE RESPONSE // 68 HZ</text>
+</svg>

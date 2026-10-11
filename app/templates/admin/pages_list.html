@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Pages & Content Blocks{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">Pages & Content Blocks</h1>
+    <p class="admin-header-subtitle">Structured content editing for core studio pages with draft staging and preview.</p>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Page Key</th>
+        <th>Page Title (EN / RU)</th>
+        <th>Status</th>
+        <th>Last Edited By</th>
+        <th>Last Published</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in pages %}
+        <tr>
+          <td>
+            <code style="font-family: var(--font-mono); color: var(--admin-accent-iris);">{{ page.page_key }}</code>
+          </td>
+          <td>
+            <div style="font-weight: 600; color: var(--admin-text-platinum);">{{ page.title_en }}</div>
+            <div style="font-size: 0.78rem; color: var(--admin-text-muted);">RU: {{ page.title_ru or '—' }}</div>
+          </td>
+          <td>
+            {% if page.has_unpublished_changes %}
+              <span class="badge badge-draft">Draft Changes</span>
+            {% else %}
+              <span class="badge badge-live">Published</span>
+            {% endif %}
+          </td>
+          <td style="color: var(--admin-text-silver); font-size: 0.82rem;">
+            {{ page.last_edited_by or 'admin' }}
+          </td>
+          <td style="color: var(--admin-text-muted); font-size: 0.82rem;">
+            {{ page.published_at.strftime('%Y-%m-%d %H:%M') if page.published_at else 'Initial' }}
+          </td>
+          <td style="text-align: right;">
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <a href="{{ url_for('admin.page_edit', page_key=page.page_key) }}" class="btn-noir-admin" style="padding: 5px 12px; font-size: 0.78rem;">
+                Edit Blocks
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if career %}Edit Role{% else %}New Role{% endif %}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="font-size: 1.8rem; color: #fff;">{% if career %}Edit Role: {{ career.title_en }}{% else %}Create Job Requisition{% endif %}</h1>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.careers_list') }}" class="btn btn-secondary btn-sm">← Back</a>
+  </div>
+</div>
+
+<form method="POST" class="admin-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="slug" class="form-label">Role Slug *</label>
+      <input type="text" id="slug" name="slug" class="form-input" required value="{{ career.slug if career else '' }}" placeholder="e.g. senior-systems-engineer">
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- EN -->
+  <h3 style="color: var(--accent-amber); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">English Requisition</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="title_en" class="form-label">Role Title (EN) *</label>
+      <input type="text" id="title_en" name="title_en" class="form-input" required value="{{ career.title_en if career else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="department_en" class="form-label">Department (EN)</label>
+      <input type="text" id="department_en" name="department_en" class="form-input" value="{{ career.department_en if career else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="location_en" class="form-label">Location (EN)</label>
+      <input type="text" id="location_en" name="location_en" class="form-input" value="{{ career.location_en if career else 'Remote / Hybrid' }}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description_en" class="form-label">Job Summary (EN) *</label>
+    <textarea id="description_en" name="description_en" class="form-textarea" rows="3" required>{{ career.description_en if career else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="requirements_en" class="form-label">Competencies & Requirements (EN)</label>
+    <textarea id="requirements_en" name="requirements_en" class="form-textarea" rows="4">{{ career.requirements_en if career else '' }}</textarea>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- RU -->
+  <h3 style="color: var(--accent-cyan); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">Russian Requisition (Локализация)</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="title_ru" class="form-label">Role Title (RU)</label>
+      <input type="text" id="title_ru" name="title_ru" class="form-input" value="{{ career.title_ru if career and career.title_ru else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="department_ru" class="form-label">Department (RU)</label>
+      <input type="text" id="department_ru" name="department_ru" class="form-input" value="{{ career.department_ru if career and career.department_ru else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="location_ru" class="form-label">Location (RU)</label>
+      <input type="text" id="location_ru" name="location_ru" class="form-input" value="{{ career.location_ru if career and career.location_ru else 'Удалённо / Гибрид' }}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description_ru" class="form-label">Job Summary (RU)</label>
+    <textarea id="description_ru" name="description_ru" class="form-textarea" rows="3">{{ career.description_ru if career and career.description_ru else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="requirements_ru" class="form-label">Requirements (RU)</label>
+    <textarea id="requirements_ru" name="requirements_ru" class="form-textarea" rows="4">{{ career.requirements_ru if career and career.requirements_ru else '' }}</textarea>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label class="form-checkbox-label">
+      <input type="checkbox" name="is_published" class="form-checkbox" {% if career and career.is_published %}checked{% endif %}>
+      <span>Published (Make visible on Careers portal)</span>
+    </label>
+  </div>
+
+  <div style="margin-top: 30px; display: flex; gap: 16px;">
+    <button type="submit" class="btn btn-primary">Save Role</button>
+    <a href="{{ url_for('admin.careers_list') }}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

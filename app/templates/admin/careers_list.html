@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Manage Vacancies{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="font-size: 1.8rem; color: #fff;">Open Positions & Vacancies</h1>
+    <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 4px;">Maintain honest, active job descriptions and publishing states.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.career_create') }}" class="btn btn-primary btn-sm">+ Post Vacancy</a>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Role Title</th>
+        <th>Department</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for role in careers %}
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: #fff;">{{ role.title_en }}</div>
+            <div style="font-family: monospace; font-size: 0.78rem; color: #64748b;">/{{ role.slug }}</div>
+          </td>
+          <td>{{ role.department_en }}</td>
+          <td>{{ role.location_en }}</td>
+          <td>
+            <span class="badge {% if role.is_published %}badge-success{% else %}badge-secondary{% endif %}">
+              {% if role.is_published %}Published{% else %}Draft{% endif %}
+            </span>
+          </td>
+          <td style="text-align: right;">
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <a href="{{ url_for('admin.career_edit', career_id=role.id) }}" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                Edit
+              </a>
+              <form method="POST" action="{{ url_for('admin.career_delete', career_id=role.id) }}" onsubmit="return confirm('Remove this job requisition?');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; font-size: 0.75rem;">
+                  Delete
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 40px; color: #64748b;">
+            No positions listed. Public site displays verified empty state.
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="100%" height="100%">
+  <defs>
+    <linearGradient id="mer-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#101214" />
+      <stop offset="50%" stop-color="#181C20" />
+      <stop offset="100%" stop-color="#13171B" />
+    </linearGradient>
+    <radialGradient id="cold-mer" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#80B9C8" stop-opacity="0.2" />
+      <stop offset="60%" stop-color="#20262B" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#mer-bg)" />
+  <rect width="1200" height="700" fill="url(#cold-mer)" />
+
+  <!-- Mountain Valley & Hydrological Vectors -->
+  <g stroke="#262E34" stroke-width="1.5" fill="none">
+    <!-- Mountain Ridges -->
+    <path d="M 0 500 Q 250 240 500 420 T 950 280 T 1200 480 L 1200 700 L 0 700 Z" fill="#14181C" stroke="#343D42" />
+    <path d="M 0 560 Q 350 380 700 530 T 1200 490 L 1200 700 L 0 700 Z" fill="#101214" stroke="#22292E" />
+    
+    <!-- Spillway Spill lines (Temporal fracture) -->
+    <line x1="600" y1="100" x2="600" y2="700" stroke="#80B9C8" stroke-width="2" stroke-dasharray="10 6" />
+    <circle cx="600" cy="420" r="140" stroke="#80B9C8" stroke-opacity="0.6" stroke-width="1.5" />
+    <circle cx="600" cy="420" r="90" stroke="#B8F36B" stroke-opacity="0.75" stroke-width="1.5" stroke-dasharray="4 4" />
+  </g>
+
+  <!-- Technical Overlay -->
+  <g font-family="'JetBrains Mono', monospace" font-size="11" fill="#A4ADB1" letter-spacing="2">
+    <text x="60" y="80">HYDRO_ARCHIVE: MERIDIAN-03 // TEMPORAL SURVEY</text>
+    <text x="60" y="100">FRACTURE_DELTA: 3 SYNCHRONIZED STATES</text>
+  </g>
+</svg>

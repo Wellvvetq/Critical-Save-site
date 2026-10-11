@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Media Library{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">Media Library</h1>
+    <p class="admin-header-subtitle">Secure image management, asset uploads, and artwork catalog.</p>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h2 class="admin-card-title">Upload Image Asset</h2>
+  </div>
+  <form method="POST" action="{{ url_for('admin.media_upload') }}" enctype="multipart/form-data" style="display: flex; gap: 14px; align-items: flex-end;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group" style="margin: 0; flex-grow: 1;">
+      <label class="form-label">Select File (.jpg, .png, .webp, .svg max 16MB)</label>
+      <input type="file" name="file" class="form-control" required accept=".jpg,.jpeg,.png,.webp,.svg">
+    </div>
+    <button type="submit" class="btn-noir-admin" style="height: 42px;">
+      📤 Upload to Library
+    </button>
+  </form>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h2 class="admin-card-title">Studio Assets (Artwork & Uploads)</h2>
+    <span style="font-size: 0.8rem; color: var(--admin-text-muted);">{{ media_files|length }} Assets Registered</span>
+  </div>
+
+  <div class="media-grid">
+    {% for item in media_files %}
+      <div class="media-item-card">
+        <div class="media-thumb-wrap">
+          <img src="{{ item.url }}" alt="{{ item.filename }}" loading="lazy">
+        </div>
+        <div class="media-item-info">
+          <div class="media-item-name" title="{{ item.filename }}">{{ item.filename }}</div>
+          <div class="media-item-meta">{{ item.size_kb }} KB • {{ item.ext }}</div>
+          <div style="margin-top: 6px;">
+            <button type="button" class="btn-noir-secondary" style="padding: 2px 6px; font-size: 0.7rem; width: 100%; justify-content: center;" onclick="navigator.clipboard.writeText('{{ item.url }}'); this.textContent='✓ Copied'; setTimeout(() => this.textContent='Copy URL', 1500);">
+              Copy URL
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

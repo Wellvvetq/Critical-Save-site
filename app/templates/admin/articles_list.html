@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Journal Articles{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="font-size: 1.8rem; color: #fff;">Studio Journal Articles</h1>
+    <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 4px;">Publish production chronicles, design manifestos, and technical essays.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.article_create') }}" class="btn btn-primary btn-sm">+ New Article</a>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Article Title</th>
+        <th>Category</th>
+        <th>Author</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for article in articles %}
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: #fff;">{{ article.title_en }}</div>
+            <div style="font-family: monospace; font-size: 0.78rem; color: #64748b;">/{{ article.slug }}</div>
+          </td>
+          <td><span class="badge badge-secondary">{{ article.category_en }}</span></td>
+          <td>{{ article.author }}</td>
+          <td>
+            <span class="badge {% if article.is_published %}badge-success{% else %}badge-secondary{% endif %}">
+              {% if article.is_published %}Published{% else %}Draft{% endif %}
+            </span>
+          </td>
+          <td style="font-size: 0.82rem; color: #94a3b8;">{{ article.created_at.strftime('%Y-%m-%d') }}</td>
+          <td style="text-align: right;">
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <a href="{{ url_for('admin.article_edit', article_id=article.id) }}" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                Edit
+              </a>
+              <form method="POST" action="{{ url_for('admin.article_delete', article_id=article.id) }}" onsubmit="return confirm('Delete this article?');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; font-size: 0.75rem;">
+                  Delete
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">
+            No journal articles drafted. Click "+ New Article" to write.
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

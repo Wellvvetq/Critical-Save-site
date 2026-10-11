@@ -1,0 +1,105 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if article %}Edit Article{% else %}New Article{% endif %}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="font-size: 1.8rem; color: #fff;">{% if article %}Edit Article{% else %}Draft Journal Article{% endif %}</h1>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.articles_list') }}" class="btn btn-secondary btn-sm">← Back</a>
+  </div>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="admin-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="slug" class="form-label">Article Slug *</label>
+      <input type="text" id="slug" name="slug" class="form-input" required value="{{ article.slug if article else '' }}" placeholder="e.g. engineering-agency">
+    </div>
+    <div class="form-group">
+      <label for="author" class="form-label">Author Byline</label>
+      <input type="text" id="author" name="author" class="form-input" value="{{ article.author if article else 'Critical Save Studio' }}">
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- EN Content -->
+  <h3 style="color: var(--accent-amber); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">English Article Content</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="title_en" class="form-label">Title (EN) *</label>
+      <input type="text" id="title_en" name="title_en" class="form-input" required value="{{ article.title_en if article else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="category_en" class="form-label">Category (EN)</label>
+      <input type="text" id="category_en" name="category_en" class="form-input" value="{{ article.category_en if article else 'Announcement' }}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="excerpt_en" class="form-label">Excerpt / Standfirst (EN)</label>
+    <textarea id="excerpt_en" name="excerpt_en" class="form-textarea" rows="2">{{ article.excerpt_en if article else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="content_en" class="form-label">Main Article Body (EN) *</label>
+    <textarea id="content_en" name="content_en" class="form-textarea" rows="8" required>{{ article.content_en if article else '' }}</textarea>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- RU Content -->
+  <h3 style="color: var(--accent-cyan); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">Russian Article Content (Локализация)</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="title_ru" class="form-label">Title (RU)</label>
+      <input type="text" id="title_ru" name="title_ru" class="form-input" value="{{ article.title_ru if article and article.title_ru else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="category_ru" class="form-label">Category (RU)</label>
+      <input type="text" id="category_ru" name="category_ru" class="form-input" value="{{ article.category_ru if article and article.category_ru else 'Анонс' }}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="excerpt_ru" class="form-label">Excerpt (RU)</label>
+    <textarea id="excerpt_ru" name="excerpt_ru" class="form-textarea" rows="2">{{ article.excerpt_ru if article and article.excerpt_ru else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="content_ru" class="form-label">Main Article Body (RU)</label>
+    <textarea id="content_ru" name="content_ru" class="form-textarea" rows="8">{{ article.content_ru if article and article.content_ru else '' }}</textarea>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- Media & Options -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="cover_file" class="form-label">Upload Header Artwork</label>
+      <input type="file" id="cover_file" name="cover_file" class="form-input" accept="image/*">
+      <input type="text" name="cover_image" class="form-input" style="margin-top: 6px;" value="{{ article.cover_image if article else '' }}" placeholder="or image path">
+    </div>
+    <div class="form-group">
+      <label for="reading_time_minutes" class="form-label">Est. Reading Time (minutes)</label>
+      <input type="number" id="reading_time_minutes" name="reading_time_minutes" class="form-input" value="{{ article.reading_time_minutes if article else 3 }}">
+    </div>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label class="form-checkbox-label">
+      <input type="checkbox" name="is_published" class="form-checkbox" {% if article and article.is_published %}checked{% endif %}>
+      <span>Published (Make visible on public Journal)</span>
+    </label>
+  </div>
+
+  <div style="margin-top: 30px; display: flex; gap: 16px;">
+    <button type="submit" class="btn btn-primary">Save Article</button>
+    <a href="{{ url_for('admin.articles_list') }}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

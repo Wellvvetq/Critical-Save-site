@@ -1,0 +1,196 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<div class="container project-breadcrumb-strip">
+  <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" class="breadcrumb-back">
+    <span class="back-arrow">←</span> {{ t('back_to_games') }}
+  </a>
+  <span class="breadcrumb-dossier-id">[ ARCHIVE // PROJECT DOSSIER // {{ game.slug|upper }} ]</span>
+</div>
+
+<!-- Project Hero: Cinematic Widescreen Masthead -->
+<section class="project-hero-section">
+  <div class="container project-hero-grid">
+    <div class="project-hero-intro">
+      <div class="project-meta-badges">
+        <span class="badge-genre">{{ game.get_genre(current_lang) }}</span>
+        <span class="badge-status">{{ game.get_status(current_lang) }}</span>
+      </div>
+
+      <h1 class="project-title">{{ game.get_title(current_lang) }}</h1>
+
+      {% if game.get_tagline(current_lang) %}
+        <p class="project-tagline">{{ game.get_tagline(current_lang) }}</p>
+      {% endif %}
+
+      <p class="project-short-brief">{{ game.get_short_description(current_lang) }}</p>
+    </div>
+
+    <div class="project-hero-visual">
+      <div class="hero-canvas-frame">
+        <div class="canvas-telemetry-header">
+          <span class="canvas-tag">PRIMARY VISUAL DOSSIER // CINEMATIC KEY ART</span>
+          <span class="canvas-status">STATUS: VERIFIED</span>
+        </div>
+        <div class="canvas-media-wrap">
+          {% if 'aegis' in game.slug %}
+            <img src="{{ url_for('static', filename='images/artwork/aegis-keyart-desktop.jpg') }}" 
+                 alt="{{ game.get_title(current_lang) }} Key Art" width="1440" height="804" fetchpriority="high">
+          {% elif 'meridian' in game.slug %}
+            <img src="{{ url_for('static', filename='images/artwork/meridian-keyart-desktop.jpg') }}" 
+                 alt="{{ game.get_title(current_lang) }} Key Art" width="1440" height="804" fetchpriority="high">
+          {% else %}
+            <img src="{{ game.hero_image or game.cover_image or url_for('static', filename='images/artwork/aegis-keyart-desktop.jpg') }}" 
+                 alt="{{ game.get_title(current_lang) }} Key Art" width="1440" height="804" fetchpriority="high">
+          {% endif %}
+          <div class="canvas-crosshair top-left"></div>
+          <div class="canvas-crosshair top-right"></div>
+          <div class="canvas-crosshair bottom-left"></div>
+          <div class="canvas-crosshair bottom-right"></div>
+        </div>
+        <div class="canvas-telemetry-footer">
+          <span class="canvas-sub">CLASSIFICATION: ORIGINAL CONCEPT ART</span>
+          <span class="canvas-res">WORLDS BEYOND THE FRAME</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Technical Telemetry Specifications Strip -->
+<div class="telemetry-specs-ribbon">
+  <div class="container specs-ribbon-grid">
+    <div class="specs-ribbon-item">
+      <span class="spec-k">{{ t('platforms') }}</span>
+      <span class="spec-v">{{ game.platforms or "PC / Steam" }}</span>
+    </div>
+    <div class="specs-ribbon-item">
+      <span class="spec-k">{{ t('status') }}</span>
+      <span class="spec-v highlight">{{ game.get_status(current_lang) }}</span>
+    </div>
+    <div class="specs-ribbon-item">
+      <span class="spec-k">{{ t('release_window') }}</span>
+      <span class="spec-v">{{ game.release_date_info or "TBA" }}</span>
+    </div>
+    <div class="specs-ribbon-item">
+      <span class="spec-k">SECTOR COORDINATES</span>
+      <span class="spec-v">55°45′N // ORBITAL-07</span>
+    </div>
+  </div>
+</div>
+
+<!-- Overview & Core Systems Asymmetric Dossier -->
+<section class="section project-body-section">
+  <div class="container project-body-grid">
+    <!-- Left: Detailed Narrative & Reconnaissance Gallery -->
+    <div class="project-narrative-col">
+      <div class="dossier-section-head">
+        <span class="telemetry-marker">[ BRIEFING // 01 ]</span>
+        <h2 class="dossier-heading">{{ t('overview') }}</h2>
+      </div>
+
+      <div class="project-full-text">
+        {{ game.get_full_description(current_lang) }}
+      </div>
+
+      <!-- High-Quality Visual Concept Art Gallery -->
+      <div class="project-gallery-block">
+        <div class="dossier-section-head">
+          <span class="telemetry-marker">[ VISUAL DOSSIER // CONCEPT ARTWORKS ]</span>
+          <h2 class="dossier-heading">{{ t('gallery') }}</h2>
+        </div>
+
+        <div class="gallery-dossier-grid">
+          {% if 'aegis' in game.slug %}
+            <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ url_for('static', filename='images/artwork/aegis-keyart-master.jpg') }}">
+              <img src="{{ url_for('static', filename='images/artwork/aegis-keyart-desktop.jpg') }}" alt="Foundry Gantry Key Art for Aegis Decay" loading="lazy">
+              <span class="gallery-recon-stamp">KEYART [FOUNDRY]</span>
+            </div>
+            <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ url_for('static', filename='images/artwork/aegis-cover-master.jpg') }}">
+              <img src="{{ url_for('static', filename='images/artwork/aegis-cover-card.jpg') }}" alt="Airlock Zero-G Art for Aegis Decay" loading="lazy">
+              <span class="gallery-recon-stamp">DOSSIER [AIRLOCK]</span>
+            </div>
+            <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ url_for('static', filename='images/artwork/studio-hero-master.jpg') }}">
+              <img src="{{ url_for('static', filename='images/artwork/studio-hero-desktop.jpg') }}" alt="Orbital Megastructure Context for Aegis Decay" loading="lazy">
+              <span class="gallery-recon-stamp">CONTEXT [STATION]</span>
+            </div>
+          {% elif 'meridian' in game.slug %}
+            <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ url_for('static', filename='images/artwork/meridian-keyart-master.jpg') }}">
+              <img src="{{ url_for('static', filename='images/artwork/meridian-keyart-desktop.jpg') }}" alt="Glacial Dam Key Art for Hollow Meridian" loading="lazy">
+              <span class="gallery-recon-stamp">KEYART [DAM GORGE]</span>
+            </div>
+            <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ url_for('static', filename='images/artwork/meridian-cover-master.jpg') }}">
+              <img src="{{ url_for('static', filename='images/artwork/meridian-cover-card.jpg') }}" alt="Spillway Walkway Art for Hollow Meridian" loading="lazy">
+              <span class="gallery-recon-stamp">DOSSIER [WALKWAY]</span>
+            </div>
+            <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ url_for('static', filename='images/artwork/studio-hero-master.jpg') }}">
+              <img src="{{ url_for('static', filename='images/artwork/studio-hero-desktop.jpg') }}" alt="Chronometer Sector Context for Hollow Meridian" loading="lazy">
+              <span class="gallery-recon-stamp">CONTEXT [SECTOR]</span>
+            </div>
+          {% else %}
+            {% for img_url in game.get_gallery_images() %}
+              <div class="gallery-thumb" tabindex="0" role="button" aria-label="Inspect visual recon capture" data-full="{{ img_url }}">
+                <img src="{{ img_url }}" alt="Screenshot for {{ game.get_title(current_lang) }}" loading="lazy">
+                <span class="gallery-recon-stamp">CAM-{{ loop.index }} [RECON]</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Operational Pillars & Transmission Feed -->
+    <div class="project-systems-col">
+      {% set feats = game.get_features(current_lang) %}
+      {% if feats %}
+        <div class="systems-terminal-panel">
+          <div class="terminal-panel-header">
+            <span class="panel-icon">⬢</span>
+            <h3 class="panel-title">{{ t('key_features') }}</h3>
+          </div>
+          <ul class="systems-list">
+            {% for feat in feats %}
+              <li class="systems-item">
+                <span class="item-marker">▸</span>
+                <span class="item-text">{{ feat }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if game.trailer_url %}
+        <div class="trailer-terminal-panel">
+          <div class="terminal-panel-header">
+            <span class="panel-icon">▶</span>
+            <h3 class="panel-title">{{ t('trailer') }}</h3>
+          </div>
+          <div class="trailer-frame-wrap">
+            <iframe src="{{ game.trailer_url }}" title="{{ game.get_title(current_lang) }} Trailer" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
+            <div class="trailer-scanline"></div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Direct Studio Inquiry Box -->
+      <div class="project-inquiry-box">
+        <h4 class="inquiry-title">PUBLISHER & PLATFORM ACCESS</h4>
+        <p class="inquiry-desc">For confidential builds, technical pitch decks, and milestone schedules:</p>
+        <a href="{{ url_for('public.contact', lang=current_lang) }}" class="btn btn-secondary btn-sm" style="width: 100%;">
+          {{ t('nav_contact') }} →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image Preview">
+  <button id="lightbox-close" class="lightbox-close" aria-label="Close dialog">&times;</button>
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="Enlarged screenshot preview">
+  </div>
+</div>
+{% endblock %}

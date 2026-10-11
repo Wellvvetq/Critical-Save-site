@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
+  <!-- Monogram interlocking elegant C and S in Critical Noir style -->
+  <text x="7" y="34" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="34" font-weight="700" fill="#8B72F8" letter-spacing="-2">C</text>
+  <text x="19" y="34" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="34" font-weight="700" fill="#D7D5E0" letter-spacing="-2">S</text>
+  <!-- Subtle glowing connection arc -->
+  <path d="M14,14 Q24,10 33,18" stroke="#8B72F8" stroke-width="1.5" stroke-linecap="round" opacity="0.6" />
+</svg>

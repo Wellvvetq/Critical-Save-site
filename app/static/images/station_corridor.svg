@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="100%" height="100%">
+  <rect width="1200" height="700" fill="#08090d" />
+  <!-- Perspective Corridor Lines -->
+  <g stroke="#1e232e" stroke-width="1.5">
+    <line x1="0" y1="0" x2="480" y2="280" />
+    <line x1="1200" y1="0" x2="720" y2="280" />
+    <line x1="0" y1="700" x2="480" y2="420" />
+    <line x1="1200" y1="700" x2="720" y2="420" />
+    
+    <!-- Vanishing Bulkhead Door -->
+    <rect x="480" y="280" width="240" height="140" fill="#0c0e14" stroke="#f59e0b" stroke-width="2" />
+    <line x1="600" y1="280" x2="600" y2="420" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4" />
+    
+    <!-- Overhead Neon Strip Guide -->
+    <line x1="200" y1="116" x2="1000" y2="116" stroke="#f59e0b" stroke-opacity="0.3" stroke-width="1" />
+  </g>
+  <text x="600" y="355" font-family="monospace" font-size="12" fill="#f59e0b" text-anchor="middle" letter-spacing="3">BULKHEAD SEAL: ENGAGED</text>
+</svg>

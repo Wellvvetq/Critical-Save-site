@@ -1,0 +1,169 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if game %}Edit {{ game.title_en }}{% else %}New Project{% endif %}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="font-size: 1.8rem; color: #fff;">{% if game %}Edit Project: {{ game.title_en }}{% else %}Register New Project{% endif %}</h1>
+    <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 4px;">Author localized metadata, media paths, and production features.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.games_list') }}" class="btn btn-secondary btn-sm">← Back to List</a>
+  </div>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="admin-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <!-- General Identifiers -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="slug" class="form-label">URL Slug *</label>
+      <input type="text" id="slug" name="slug" class="form-input" required value="{{ game.slug if game else '' }}" placeholder="e.g., aegis-decay">
+    </div>
+    <div class="form-group">
+      <label for="sort_order" class="form-label">Sort Order (Ascending)</label>
+      <input type="number" id="sort_order" name="sort_order" class="form-input" value="{{ game.sort_order if game else 0 }}">
+    </div>
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- English Section -->
+  <h3 style="color: var(--accent-amber); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">English Content (Primary)</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="title_en" class="form-label">Title (EN) *</label>
+      <input type="text" id="title_en" name="title_en" class="form-input" required value="{{ game.title_en if game else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="genre_en" class="form-label">Genre (EN)</label>
+      <input type="text" id="genre_en" name="genre_en" class="form-input" value="{{ game.genre_en if game else '' }}" placeholder="e.g. Sci-Fi / Narrative Survival">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="tagline_en" class="form-label">Tagline (EN)</label>
+    <input type="text" id="tagline_en" name="tagline_en" class="form-input" value="{{ game.tagline_en if game else '' }}">
+  </div>
+
+  <div class="form-group">
+    <label for="short_description_en" class="form-label">Short Description (EN)</label>
+    <textarea id="short_description_en" name="short_description_en" class="form-textarea" rows="2">{{ game.short_description_en if game else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="full_description_en" class="form-label">Full Overview & Narrative (EN)</label>
+    <textarea id="full_description_en" name="full_description_en" class="form-textarea" rows="5">{{ game.full_description_en if game else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="status_en" class="form-label">Production Status (EN)</label>
+    <input type="text" id="status_en" name="status_en" class="form-input" value="{{ game.status_en if game else 'In Development' }}">
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- Russian Section -->
+  <h3 style="color: var(--accent-cyan); font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">Russian Content (Локализация)</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="title_ru" class="form-label">Title (RU)</label>
+      <input type="text" id="title_ru" name="title_ru" class="form-input" value="{{ game.title_ru if game and game.title_ru else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="genre_ru" class="form-label">Genre (RU)</label>
+      <input type="text" id="genre_ru" name="genre_ru" class="form-input" value="{{ game.genre_ru if game and game.genre_ru else '' }}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="tagline_ru" class="form-label">Tagline (RU)</label>
+    <input type="text" id="tagline_ru" name="tagline_ru" class="form-input" value="{{ game.tagline_ru if game and game.tagline_ru else '' }}">
+  </div>
+
+  <div class="form-group">
+    <label for="short_description_ru" class="form-label">Short Description (RU)</label>
+    <textarea id="short_description_ru" name="short_description_ru" class="form-textarea" rows="2">{{ game.short_description_ru if game and game.short_description_ru else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="full_description_ru" class="form-label">Full Overview & Narrative (RU)</label>
+    <textarea id="full_description_ru" name="full_description_ru" class="form-textarea" rows="5">{{ game.full_description_ru if game and game.full_description_ru else '' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="status_ru" class="form-label">Production Status (RU)</label>
+    <input type="text" id="status_ru" name="status_ru" class="form-input" value="{{ game.status_ru if game and game.status_ru else 'В разработке' }}">
+  </div>
+
+  <hr style="border: 0; border-top: 1px solid #1e2636; margin: 24px 0;">
+
+  <!-- Media & Specifications -->
+  <h3 style="color: #fff; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 16px;">Media & Technical Specs</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="cover_file" class="form-label">Upload Cover Art (PNG, JPG, SVG, WEBP)</label>
+      <input type="file" id="cover_file" name="cover_file" class="form-input" accept="image/*">
+      <input type="text" name="cover_image" class="form-input" style="margin-top: 6px;" value="{{ game.cover_image if game else '' }}" placeholder="or specify asset URL / path">
+    </div>
+
+    <div class="form-group">
+      <label for="hero_file" class="form-label">Upload Hero Art</label>
+      <input type="file" id="hero_file" name="hero_file" class="form-input" accept="image/*">
+      <input type="text" name="hero_image" class="form-input" style="margin-top: 6px;" value="{{ game.hero_image if game else '' }}" placeholder="or specify asset URL / path">
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="form-group">
+      <label for="platforms" class="form-label">Target Platforms</label>
+      <input type="text" id="platforms" name="platforms" class="form-input" value="{{ game.platforms if game else '' }}" placeholder="PC (Windows / Steam)">
+    </div>
+    <div class="form-group">
+      <label for="release_date_info" class="form-label">Release Window (Honest Target)</label>
+      <input type="text" id="release_date_info" name="release_date_info" class="form-input" value="{{ game.release_date_info if game else '' }}" placeholder="TBA">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="trailer_url" class="form-label">Trailer Embed URL (YouTube-nocookie / Vimeo)</label>
+    <input type="url" id="trailer_url" name="trailer_url" class="form-input" value="{{ game.trailer_url if game and game.trailer_url else '' }}" placeholder="https://www.youtube-nocookie.com/embed/...">
+  </div>
+
+  <div class="form-group">
+    <label for="gallery_images_json" class="form-label">Gallery Images (JSON Array of URLs)</label>
+    <textarea id="gallery_images_json" name="gallery_images_json" class="form-textarea" rows="2">{{ game.gallery_images_json if game else '[]' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="features_json_en" class="form-label">Key Systems / Pillars EN (JSON Array of strings)</label>
+    <textarea id="features_json_en" name="features_json_en" class="form-textarea" rows="2">{{ game.features_json_en if game else '[]' }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="features_json_ru" class="form-label">Key Systems / Pillars RU (JSON Array of strings)</label>
+    <textarea id="features_json_ru" name="features_json_ru" class="form-textarea" rows="2">{{ game.features_json_ru if game else '[]' }}</textarea>
+  </div>
+
+  <!-- Publishing toggles -->
+  <div style="display: flex; gap: 30px; margin-top: 20px;">
+    <label class="form-checkbox-label">
+      <input type="checkbox" name="is_published" class="form-checkbox" {% if game and game.is_published %}checked{% endif %}>
+      <span>Published (Visible publicly)</span>
+    </label>
+
+    <label class="form-checkbox-label">
+      <input type="checkbox" name="is_featured" class="form-checkbox" {% if game and game.is_featured %}checked{% endif %}>
+      <span>Featured on Homepage</span>
+    </label>
+  </div>
+
+  <div style="margin-top: 36px; display: flex; gap: 16px;">
+    <button type="submit" class="btn btn-primary">
+      {% if game %}Commit Changes{% else %}Create Project Record{% endif %}
+    </button>
+    <a href="{{ url_for('admin.games_list') }}" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

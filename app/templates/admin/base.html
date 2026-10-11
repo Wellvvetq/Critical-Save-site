@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Operations{% endblock %} — Studio Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" role="navigation" aria-label="Administrative Navigation">
+      <div class="admin-sidebar-header">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" width="26" height="26">
+        <div class="admin-brand-title">CONTROL CENTER</div>
+      </div>
+
+      <div class="admin-user-pill">
+        <span>{{ session.get('username', 'operator') }}</span>
+        <span class="admin-role-badge {% if session.get('role') in ['owner', 'admin'] %}role-owner{% else %}role-editor{% endif %}">
+          {{ session.get('role', 'editor') }}
+        </span>
+      </div>
+
+      <nav class="admin-nav">
+        <div class="admin-nav-heading">Overview</div>
+        <a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+          <span class="nav-icon">❖</span> Dashboard
+        </a>
+        <a href="{{ url_for('admin.publishing_center') }}" class="{% if request.endpoint == 'admin.publishing_center' %}active{% endif %}">
+          <span class="nav-icon">⚡</span> Publishing Center
+        </a>
+
+        <div class="admin-nav-heading">Content & Works</div>
+        <a href="{{ url_for('admin.pages_list') }}" class="{% if 'pages' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">📄</span> Pages & Blocks
+        </a>
+        <a href="{{ url_for('admin.games_list') }}" class="{% if 'games' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">⚔</span> Games & Worlds
+        </a>
+        <a href="{{ url_for('admin.software_list') }}" class="{% if 'software' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">💻</span> Software & Tools
+        </a>
+        <a href="{{ url_for('admin.releases_list') }}" class="{% if 'releases' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">📦</span> Releases & SHA-256
+        </a>
+        <a href="{{ url_for('admin.media_library') }}" class="{% if 'media' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">🖼</span> Media Library
+        </a>
+        <a href="{{ url_for('admin.articles_list') }}" class="{% if 'articles' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">✎</span> Journal Entries
+        </a>
+        <a href="{{ url_for('admin.careers_list') }}" class="{% if 'careers' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">⚑</span> Careers
+        </a>
+
+        <div class="admin-nav-heading">Management & Access</div>
+        <a href="{{ url_for('admin.localization_list') }}" class="{% if 'localization' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">🌐</span> Localization RU/EN
+        </a>
+        <a href="{{ url_for('admin.team_list') }}" class="{% if 'team' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">👥</span> Team & Access
+        </a>
+        <a href="{{ url_for('admin.inquiries_list') }}" class="{% if 'inquiries' in request.endpoint %}active{% endif %}">
+          <span class="nav-icon">✉</span> Inbound Inquiries
+        </a>
+
+        <div style="margin-top: 24px; padding: 0 20px;">
+          <a href="{{ url_for('public.index', lang='en') }}" target="_blank" class="btn-noir-secondary" style="width: 100%; justify-content: center;">
+            ↗ View Public Site
+          </a>
+        </div>
+
+        <div style="margin-top: auto; padding: 20px;">
+          <a href="{{ url_for('admin.logout') }}" style="color: var(--admin-status-danger); font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            ⏻ Terminate Session
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Admin Main Body -->
+    <main class="admin-main">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div style="background: rgba(139, 114, 248, 0.12); border: 1px solid var(--admin-border-focus); border-left: 4px solid var(--admin-accent-violet); padding: 12px 18px; margin-bottom: 24px; border-radius: 4px; font-size: 0.9rem; color: #FFFFFF;">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block admin_content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

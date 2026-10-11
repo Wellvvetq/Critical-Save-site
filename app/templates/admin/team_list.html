@@ -1,0 +1,101 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Team & Access Authority{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">Team & Access Authority</h1>
+    <p class="admin-header-subtitle">Individual credentials, role assignments, and session revocation.</p>
+  </div>
+  {% if session.get('role') in ['owner', 'admin'] %}
+    <div>
+      <a href="#invite-section" class="btn-noir-admin">+ Add Operator (Editor)</a>
+    </div>
+  {% endif %}
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden; margin-bottom: 30px;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Assigned Role</th>
+        <th>Account Status</th>
+        <th>Account Created</th>
+        <th>Last Login</th>
+        <th style="text-align: right;">Authority</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: var(--admin-text-platinum);">{{ u.username }}</div>
+          </td>
+          <td>
+            <span class="admin-role-badge {% if u.role in ['owner', 'admin'] %}role-owner{% else %}role-editor{% endif %}">
+              {{ u.role }}
+            </span>
+          </td>
+          <td>
+            {% if u.is_active %}
+              <span class="badge badge-live">Active</span>
+            {% else %}
+              <span class="badge badge-danger">Revoked</span>
+            {% endif %}
+          </td>
+          <td style="color: var(--admin-text-muted); font-size: 0.8rem;">
+            {{ u.created_at.strftime('%Y-%m-%d') }}
+          </td>
+          <td style="color: var(--admin-text-muted); font-size: 0.8rem;">
+            {{ u.last_login.strftime('%Y-%m-%d %H:%M') if u.last_login else 'Never' }}
+          </td>
+          <td style="text-align: right;">
+            {% if session.get('role') in ['owner', 'admin'] and u.id != session.get('user_id') %}
+              <form method="POST" action="{{ url_for('admin.team_toggle_active', user_id=u.id) }}" style="display: inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn-noir-secondary" style="padding: 4px 10px; font-size: 0.76rem;">
+                  {% if u.is_active %}Revoke Access{% else %}Re-activate{% endif %}
+                </button>
+              </form>
+            {% else %}
+              <span style="font-size: 0.75rem; color: var(--admin-text-muted);">Self / Protected</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if session.get('role') in ['owner', 'admin'] %}
+<div class="admin-card" id="invite-section">
+  <div class="admin-card-header">
+    <h2 class="admin-card-title">Register New Operator Account</h2>
+  </div>
+
+  <form method="POST" action="{{ url_for('admin.team_create_user') }}" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 16px; align-items: flex-end;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group" style="margin: 0;">
+      <label class="form-label">Username</label>
+      <input type="text" name="username" class="form-control" required placeholder="e.g. companion">
+    </div>
+    <div class="form-group" style="margin: 0;">
+      <label class="form-label">Initial Password</label>
+      <input type="password" name="password" class="form-control" required placeholder="Minimum 10 chars">
+    </div>
+    <div class="form-group" style="margin: 0;">
+      <label class="form-label">Role</label>
+      <select name="role" class="form-control">
+        <option value="editor">Editor (Drafting & Media)</option>
+        <option value="owner">Owner (Full Authority & Publish)</option>
+      </select>
+    </div>
+    <button type="submit" class="btn-noir-admin" style="height: 42px;">
+      Register Operator
+    </button>
+  </form>
+</div>
+{% endif %}
+{% endblock %}

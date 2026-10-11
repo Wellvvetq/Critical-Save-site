@@ -1,0 +1,16 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<section class="section" style="padding-top: 100px; text-align: center;">
+  <div class="container" style="max-width: 600px;">
+    <span class="hero-badge">ERROR 500</span>
+    <h1 style="margin-top: 20px; font-size: 3rem;">{{ t('server_error_title') }}</h1>
+    <p style="margin-top: 16px; margin-bottom: 30px;">
+      {{ t('server_error_desc') }}
+    </p>
+    <a href="{{ url_for('public.index', lang=current_lang) }}" class="btn btn-secondary">
+      {{ t('back_home') }}
+    </a>
+  </div>
+</section>
+{% endblock %}

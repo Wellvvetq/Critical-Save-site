@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Operations Authentication — Critical Save</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #07080b;">
+  <div style="width: 100%; max-width: 420px; padding: 40px; background: #0d1017; border: 1px solid var(--border-medium); border-radius: 4px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+    
+    <div style="text-align: center; margin-bottom: 32px;">
+      <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" width="44" height="44" style="margin-bottom: 12px;">
+      <h1 style="font-size: 1.4rem; color: #fff; letter-spacing: 0.1em; text-transform: uppercase;">Control Center</h1>
+      <p style="font-family: monospace; font-size: 0.78rem; color: #71717a; margin-top: 4px;">SECURE STUDIO GATEWAY</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" style="font-size: 0.88rem; padding: 12px 14px;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('admin.login', next=request.args.get('next')) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="form-group">
+        <label for="username" class="form-label">Operator Handle</label>
+        <input type="text" id="username" name="username" class="form-input" required autofocus>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 28px;">
+        <label for="password" class="form-label">Security Key</label>
+        <input type="password" id="password" name="password" class="form-input" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        Authenticate Operator
+      </button>
+    </form>
+
+    <div style="margin-top: 24px; text-align: center;">
+      <a href="{{ url_for('public.index', lang='en') }}" style="color: #64748b; font-size: 0.85rem;">
+        ← Back to Studio Portal
+      </a>
+    </div>
+  </div>
+</body>
+</html>

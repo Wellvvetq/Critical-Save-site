@@ -1,0 +1,549 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<!-- Breadcrumb Bar -->
+<div class="breadcrumb-bar" aria-label="Breadcrumb">
+  <div class="container breadcrumb-inner">
+    <a href="{{ url_for('public.index', lang=current_lang) }}" class="breadcrumb-link">{{ t('nav_home') }}</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-link">{{ t('nav_products') }}</span>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Avenor</span>
+  </div>
+</div>
+
+<!-- Product Hero Section matching Reference Panel 3 -->
+<section class="fwr-hero-section fwr-hero-noir-centered" aria-labelledby="fwr-hero-title">
+  <div class="container">
+    <!-- Top Workstation Visual Frame -->
+    <div class="fwr-noir-workstation-banner">
+      <div class="workstation-glow-backdrop"></div>
+      <img src="{{ url_for('static', filename='images/artwork/fwr-hero-desktop-master.jpg') }}" 
+           alt="Financial War Room Workstation and Interface" 
+           class="workstation-hero-img" fetchpriority="high">
+    </div>
+
+    <!-- Centered Editorial Product Identity -->
+    <div class="fwr-noir-header-center">
+      <h1 id="fwr-hero-title" class="fwr-noir-title-giant">AVENOR</h1>
+      <p class="fwr-noir-title-lead">
+        {% if current_lang == 'ru' %}
+          Персональный финансовый интеллект с локальным AI
+        {% else %}
+          Personal Finance Intelligence with Local AI
+        {% endif %}
+      </p>
+      <p class="fwr-noir-title-subdesc">
+        {% if current_lang == 'ru' %}
+          Полный контроль над личными финансами, прогноз ликвидности, сценарный анализ и стратегия закрытия долгов — на вашем компьютере, с заботой о конфиденциальности.
+        {% else %}
+          Complete sovereignty over capital runway, liquidity trajectory, debt eradication, and stress testing — directly on your computer with zero cloud telemetry.
+        {% endif %}
+      </p>
+
+      <div class="fwr-noir-actions-center">
+        <a href="#download-center" class="btn btn-primary btn-noir-accent">
+          {{ t('fwr_cta_download') }} <span class="btn-arrow">↓</span>
+        </a>
+        <a href="#features" class="btn btn-secondary btn-noir-outline">
+          {{ t('fwr_cta_features') }} <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 6-Feature Icon Matrix matching Reference Panel 3 -->
+    <div class="fwr-noir-matrix-grid">
+      <div class="fwr-matrix-item">
+        <div class="matrix-icon">👤</div>
+        <span class="matrix-label">
+          {% if current_lang == 'ru' %}Контроль ликвидности и денежных потоков{% else %}Liquidity & Cash Flow Control{% endif %}
+        </span>
+      </div>
+      <div class="fwr-matrix-item">
+        <div class="matrix-icon">📈</div>
+        <span class="matrix-label">
+          {% if current_lang == 'ru' %}Прогноз на 180 дней и сценарный анализ{% else %}180-Day Runway & Scenario Analysis{% endif %}
+        </span>
+      </div>
+      <div class="fwr-matrix-item">
+        <div class="matrix-icon">⊕</div>
+        <span class="matrix-label">
+          {% if current_lang == 'ru' %}Стратегии закрытия долгов{% else %}Debt Eradication Engine{% endif %}
+        </span>
+      </div>
+      <div class="fwr-matrix-item">
+        <div class="matrix-icon">🧠</div>
+        <span class="matrix-label">
+          {% if current_lang == 'ru' %}Локальный AI в режиме чтения (Ollama){% else %}Local AI in Read-Only Mode (Ollama){% endif %}
+        </span>
+      </div>
+      <div class="fwr-matrix-item">
+        <div class="matrix-icon">☁⃠</div>
+        <span class="matrix-label">
+          {% if current_lang == 'ru' %}Без облака и передачи данных{% else %}Zero Cloud Telemetry{% endif %}
+        </span>
+      </div>
+      <div class="fwr-matrix-item">
+        <div class="matrix-icon">💻</div>
+        <span class="matrix-label">
+          {% if current_lang == 'ru' %}Работает на вашем компьютере{% else %}Runs Locally on Windows{% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Features Section -->
+<section id="features" class="section section-fwr-features" aria-labelledby="fwr-features-title">
+  <div class="container">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker">[ OPERATIONAL CORE // CAPABILITIES ]</span>
+        <h2 id="fwr-features-title" class="section-title">{{ t('fwr_section_features') }}</h2>
+        <p class="section-desc">
+          {% if current_lang == 'ru' %}
+            Шесть ключевых столпов бескомпромиссной финансовой автономности, спроектированных по стандартам оперативного контроля.
+          {% else %}
+            Six foundational pillars of uncompromising financial sovereignty, engineered for tactical discipline and foresight.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="fwr-features-grid">
+      <!-- Feature 1 -->
+      <article class="fwr-feature-card">
+        <div class="feature-card-header">
+          <span class="feature-num">[01]</span>
+          <span class="feature-tag">ACCOUNTING CORE</span>
+        </div>
+        <h3 class="feature-title">
+          {% if current_lang == 'ru' %}Мультивалютный учет и двойная запись{% else %}Multicurrency Ledger & Double-Entry{% endif %}
+        </h3>
+        <p class="feature-desc">
+          {% if current_lang == 'ru' %}
+            Детерминированная арифметика с фиксированной точкой (Decimal). Межсчетные переводы подчиняются строгому инварианту: капитал не искажается погрешностями с плавающей точкой.
+          {% else %}
+            Strict fixed-point decimal arithmetic eliminate floating-point drift. Inter-account transfers preserve capital invariance with deterministic bookkeeping.
+          {% endif %}
+        </p>
+        <ul class="feature-checklist">
+          <li>✓ {% if current_lang == 'ru' %}Многовалютные счета (RUB, USD, EUR, USDT){% else %}Multicurrency accounts (RUB, USD, EUR, USDT){% endif %}</li>
+          <li>✓ {% if current_lang == 'ru' %}Автоматический пересчет Net Worth по курсу{% else %}Dynamic Net Worth revaluation{% endif %}</li>
+        </ul>
+      </article>
+
+      <!-- Feature 2 -->
+      <article class="fwr-feature-card featured-glow">
+        <div class="feature-card-header">
+          <span class="feature-num">[02]</span>
+          <span class="feature-tag">FORECAST ENGINE</span>
+        </div>
+        <h3 class="feature-title">
+          {% if current_lang == 'ru' %}Проектор денежных потоков (7–180 дней){% else %}Cash Flow Trajectory (7–180 Days){% endif %}
+        </h3>
+        <p class="feature-desc">
+          {% if current_lang == 'ru' %}
+            Математическое моделирование остатков ликвидности на 7, 30, 90 и 180 дней с автоматической детекцией потенциальных кассовых разрывов до их наступления.
+          {% else %}
+            Algorithmic liquidity projection across 7, 30, 90, and 180 days. Automated pre-emptive detection of upcoming liquidity troughs.
+          {% endif %}
+        </p>
+        <ul class="feature-checklist">
+          <li>✓ {% if current_lang == 'ru' %}Предиктивное предупреждение о дефиците{% else %}Predictive cash-crunch warning thresholds{% endif %}</li>
+          <li>✓ {% if current_lang == 'ru' %}Интеграция регулярных платежей и доходов{% else %}Recurring inflows and obligations timeline{% endif %}</li>
+        </ul>
+      </article>
+
+      <!-- Feature 3 -->
+      <article class="fwr-feature-card">
+        <div class="feature-card-header">
+          <span class="feature-num">[03]</span>
+          <span class="feature-tag">DEBT ELIMINATION</span>
+        </div>
+        <h3 class="feature-title">
+          {% if current_lang == 'ru' %}Debt Payoff Engine: Лавина vs Снежный ком{% else %}Debt Payoff Engine: Avalanche vs Snowball{% endif %}
+        </h3>
+        <p class="feature-desc">
+          {% if current_lang == 'ru' %}
+            Сравнение математической оптимизации (Avalanche, наибольшая ставка) и психологического импульса (Snowball, наименьший остаток) с точным расчетом переплаты.
+          {% else %}
+            Side-by-side comparison of Avalanche (highest APR first) versus Snowball (lowest principal first), calculating exact interest saved.
+          {% endif %}
+        </p>
+        <ul class="feature-checklist">
+          <li>✓ {% if current_lang == 'ru' %}Точный расчет сэкономленных процентов{% else %}Precise calculation of interest saved{% endif %}</li>
+          <li>✓ {% if current_lang == 'ru' %}Прогноз даты полного освобождения от долгов{% else %}Projected debt-free milestone timeline{% endif %}</li>
+        </ul>
+      </article>
+
+      <!-- Feature 4 -->
+      <article class="fwr-feature-card">
+        <div class="feature-card-header">
+          <span class="feature-num">[04]</span>
+          <span class="feature-tag">STRESS TESTING</span>
+        </div>
+        <h3 class="feature-title">
+          {% if current_lang == 'ru' %}Scenario Lab: Стресс-тестирование «Что если?»{% else %}Scenario Lab: What-If Stress Testing{% endif %}
+        </h3>
+        <p class="feature-desc">
+          {% if current_lang == 'ru' %}
+            Дифференциальное моделирование непредвиденных расходов, потери доходов или крупных инвестиций в изолированной песочнице без изменения боевой базы данных.
+          {% else %}
+            Differential sandbox testing for major outlays, income disruption, or market shifts without mutating actual database registers.
+          {% endif %}
+        </p>
+        <ul class="feature-checklist">
+          <li>✓ {% if current_lang == 'ru' %}Песочница с нулевым риском искажения данных{% else %}Zero-risk isolated scenario sandbox{% endif %}</li>
+          <li>✓ {% if current_lang == 'ru' %}Оценка выживаемости финансовой подушки{% else %}Emergency cushion longevity assessment{% endif %}</li>
+        </ul>
+      </article>
+
+      <!-- Feature 5 -->
+      <article class="fwr-feature-card featured-glow">
+        <div class="feature-card-header">
+          <span class="feature-num">[05]</span>
+          <span class="feature-tag">LOCAL INTELLIGENCE</span>
+        </div>
+        <h3 class="feature-title">
+          {% if current_lang == 'ru' %}Локальный AI-аналитик (Ollama / Heuristics){% else %}Local AI Financial Advisor (Ollama){% endif %}
+        </h3>
+        <p class="feature-desc">
+          {% if current_lang == 'ru' %}
+            Анализ финансовых трендов с помощью локальной нейросети через Ollama (llama3.2). Режим строгого чтения (read-only): ИИ не совершает транзакций и не меняет балансы.
+          {% else %}
+            Local LLM inference via Ollama (llama3.2) or deterministic fallback heuristics. Strict read-only boundaries: AI cannot execute payments or alter ledgers.
+          {% endif %}
+        </p>
+        <ul class="feature-checklist">
+          <li>✓ {% if current_lang == 'ru' %}Строго безопасная изоляция: zero write permissions{% else %}Strict security: zero write or payment authority{% endif %}</li>
+          <li>✓ {% if current_lang == 'ru' %}Контекстный аудит аномалий и оптимизация трат{% else %}Contextual anomaly detection & spending audit{% endif %}</li>
+        </ul>
+      </article>
+
+      <!-- Feature 6 -->
+      <article class="fwr-feature-card">
+        <div class="feature-card-header">
+          <span class="feature-num">[06]</span>
+          <span class="feature-tag">DATA SOVEREIGNTY</span>
+        </div>
+        <h3 class="feature-title">
+          {% if current_lang == 'ru' %}Двухфазный JSON-бэкап и миграция{% else %}Two-Phase JSON Backup & Sovereignty{% endif %}
+        </h3>
+        <p class="feature-desc">
+          {% if current_lang == 'ru' %}
+            Полный экспорт всех счетов, транзакций и параметров в один структурированный JSON-архив с контролем целостности. Легкое восстановление на любом компьютере.
+          {% else %}
+            Complete one-click export and import of all financial registers into standardized, human-readable JSON with integrity checksums.
+          {% endif %}
+        </p>
+        <ul class="feature-checklist">
+          <li>✓ {% if current_lang == 'ru' %}Полный контроль над своими файлами{% else %}100% user ownership of data artifacts{% endif %}</li>
+          <li>✓ {% if current_lang == 'ru' %}Мгновенный перенос между машинами{% else %}Seamless migration between workstations{% endif %}</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Interface Gallery Section -->
+<section id="gallery" class="section section-fwr-gallery" aria-labelledby="fwr-gallery-title">
+  <div class="container">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker">[ VISUAL VERIFICATION // AUTHENTIC SCREENS ]</span>
+        <h2 id="fwr-gallery-title" class="section-title">{{ t('fwr_section_gallery') }}</h2>
+        <p class="section-desc">
+          {% if current_lang == 'ru' %}
+            Подлинные скриншоты актуального интерфейса Financial War Room, подтверждающие реальный вид системы. Нажмите для полноэкранного просмотра.
+          {% else %}
+            Authentic, unretouched interface captures from the working Financial War Room desktop build. Click any frame to inspect high-resolution details.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="fwr-gallery-grid">
+      <!-- Screen 1 -->
+      <figure class="fwr-gallery-item gallery-thumb" data-full="{{ url_for('static', filename='images/products/fwr/dashboard-main.png') }}" tabindex="0" role="button" aria-label="Inspect Dashboard Screenshot">
+        <div class="gallery-image-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/dashboard-main.png') }}" alt="Financial War Room Dashboard" loading="lazy">
+          <span class="gallery-recon-stamp">[SCREEN // 01]</span>
+        </div>
+        <figcaption class="gallery-caption">
+          <strong>{% if current_lang == 'ru' %}Оперативный дашборд{% else %}Executive Command Dashboard{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Обзор Net Worth, ликвидности и структуры счетов{% else %}Net worth metrics, liquidity reserves, and asset distribution{% endif %}</span>
+        </figcaption>
+      </figure>
+
+      <!-- Screen 2 -->
+      <figure class="fwr-gallery-item gallery-thumb" data-full="{{ url_for('static', filename='images/products/fwr/cashflow-forecast.png') }}" tabindex="0" role="button" aria-label="Inspect Forecast Screenshot">
+        <div class="gallery-image-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/cashflow-forecast.png') }}" alt="Financial War Room Cash Flow Forecast" loading="lazy">
+          <span class="gallery-recon-stamp">[SCREEN // 02]</span>
+        </div>
+        <figcaption class="gallery-caption">
+          <strong>{% if current_lang == 'ru' %}Траектория ликвидности{% else %}Cash Flow Trajectory Matrix{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Проекция остатков на 180 дней и обнаружение кассовых разрывов{% else %}180-day forecast runway with liquidity gap indicators{% endif %}</span>
+        </figcaption>
+      </figure>
+
+      <!-- Screen 3 -->
+      <figure class="fwr-gallery-item gallery-thumb" data-full="{{ url_for('static', filename='images/products/fwr/debt-engine.png') }}" tabindex="0" role="button" aria-label="Inspect Debt Engine Screenshot">
+        <div class="gallery-image-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/debt-engine.png') }}" alt="Financial War Room Debt Engine" loading="lazy">
+          <span class="gallery-recon-stamp">[SCREEN // 03]</span>
+        </div>
+        <figcaption class="gallery-caption">
+          <strong>{% if current_lang == 'ru' %}Долговой калькулятор{% else %}Debt Payoff Engine{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Сравнение стратегий Лавина и Снежный ком с экономией процентов{% else %}Avalanche vs Snowball payoff strategies with interest savings{% endif %}</span>
+        </figcaption>
+      </figure>
+
+      <!-- Screen 4 -->
+      <figure class="fwr-gallery-item gallery-thumb" data-full="{{ url_for('static', filename='images/products/fwr/transactions-ledger.png') }}" tabindex="0" role="button" aria-label="Inspect Transactions Screenshot">
+        <div class="gallery-image-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/transactions-ledger.png') }}" alt="Financial War Room Transactions Ledger" loading="lazy">
+          <span class="gallery-recon-stamp">[SCREEN // 04]</span>
+        </div>
+        <figcaption class="gallery-caption">
+          <strong>{% if current_lang == 'ru' %}Журнал транзакций{% else %}Accounting Ledger & Audit{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Двухсторонняя классификация, категории и детальные фильтры{% else %}Categorized register, double-entry audit trails, and filters{% endif %}</span>
+        </figcaption>
+      </figure>
+
+      <!-- Screen 5 -->
+      <figure class="fwr-gallery-item gallery-thumb" data-full="{{ url_for('static', filename='images/products/fwr/ai-advisor.png') }}" tabindex="0" role="button" aria-label="Inspect AI Advisor Screenshot">
+        <div class="gallery-image-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/ai-advisor.png') }}" alt="Financial War Room AI Advisor" loading="lazy">
+          <span class="gallery-recon-stamp">[SCREEN // 05]</span>
+        </div>
+        <figcaption class="gallery-caption">
+          <strong>{% if current_lang == 'ru' %}Локальный AI-советник{% else %}Local AI Financial Advisor{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Аналитический ассистент на базе Ollama в изолированной среде{% else %}Ollama-powered intelligence in an isolated local container{% endif %}</span>
+        </figcaption>
+      </figure>
+
+      <!-- Screen 6 -->
+      <figure class="fwr-gallery-item gallery-thumb" data-full="{{ url_for('static', filename='images/products/fwr/backup-restore.png') }}" tabindex="0" role="button" aria-label="Inspect Backup Screenshot">
+        <div class="gallery-image-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/backup-restore.png') }}" alt="Financial War Room Backup and Restore" loading="lazy">
+          <span class="gallery-recon-stamp">[SCREEN // 06]</span>
+        </div>
+        <figcaption class="gallery-caption">
+          <strong>{% if current_lang == 'ru' %}Резервное копирование{% else %}Backup & Data Sovereignty{% endif %}</strong>
+          <span>{% if current_lang == 'ru' %}Двухфазный экспорт и восстановление полного снимка системы{% else %}Two-phase JSON snapshot backup and immediate restore{% endif %}</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy & Security Architecture Section matching Reference Panel 3 -->
+<section id="privacy" class="section section-fwr-privacy-noir" aria-labelledby="fwr-privacy-title">
+  <div class="container">
+    <div class="fwr-privacy-noir-split">
+      <div class="privacy-noir-visual-col">
+        <div class="privacy-noir-chalet-frame">
+          <img src="{{ url_for('static', filename='images/artwork/fwr-privacy-chalet-desktop.jpg') }}" 
+               alt="Private Sanctuary Mountain Chalet — Local Sovereignty" loading="lazy">
+        </div>
+      </div>
+
+      <div class="privacy-noir-content-col">
+        <h2 id="fwr-privacy-title" class="privacy-noir-giant-title">
+          {% if current_lang == 'ru' %}
+            ВАШИ ДАННЫЕ.<br>ВАШ КОНТРОЛЬ.
+          {% else %}
+            YOUR DATA.<br>YOUR CONTROL.
+          {% endif %}
+        </h2>
+        <p class="privacy-noir-lead-p">
+          {% if current_lang == 'ru' %}
+            Все данные хранятся локально на вашем компьютере. Локальный AI анализирует ваши финансы в режиме чтения и не имеет доступа к банковским платежам.
+          {% else %}
+            All financial registers and ledgers are stored strictly on your workstation. Local AI analyzes trends in read-only mode with zero bank API scraping or cloud exposure.
+          {% endif %}
+        </p>
+        <a href="#download-center" class="privacy-noir-text-link">
+          {% if current_lang == 'ru' %}Подробнее о конфиденциальности →{% else %}Learn more about data privacy →{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Download Center Section -->
+<section id="download-center" class="section section-fwr-download" aria-labelledby="fwr-download-title">
+  <div class="container">
+    <!-- Level 1: Product identity & supported platform -->
+    <div class="section-editorial-header text-center-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker" style="display: none;" aria-hidden="true">[ PRODUCTION RELEASE // OFFICIAL REPOSITORY ]</span>
+        <span class="section-eyebrow">Avenor v{{ meta.version }}</span>
+        <h2 id="fwr-download-title" class="section-title">{{ t('fwr_section_download') }}</h2>
+        <p class="section-desc">
+          {% if current_lang == 'ru' %}
+            Официальные проверенные сборки для <strong>Windows 10 / 11 (64-bit)</strong>. Выберите подходящую редакцию для вашего компьютера.
+          {% else %}
+            Official verified release builds for <strong>Windows 10 / 11 (64-bit)</strong>. Choose the edition that best fits your workflow.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Level 2: Two prominent installation choices (Standard & Offline) -->
+    <div class="download-cards-grid">
+      <!-- Standard Edition Card -->
+      <div class="download-edition-card standard-card">
+        <div class="edition-card-header">
+          <div class="edition-badge-group">
+            <span class="edition-recommended-badge">
+              {% if current_lang == 'ru' %}Рекомендуется{% else %}Recommended{% endif %}
+            </span>
+            <span class="edition-platform-pill">Windows 10 / 11 (64-bit)</span>
+          </div>
+          <h3 class="edition-title">{{ meta.standard.edition }}</h3>
+          <span class="edition-size-tag">{{ meta.standard.size_mb }}</span>
+        </div>
+
+        <p class="edition-desc">
+          {% if current_lang == 'ru' %}
+            Компактный установщик с полным функционалом. Если вы включите локальный AI, модель Llama 3.2 будет загружена при первом запуске через интернет.
+          {% else %}
+            Compact installer with complete functionality. If local AI is enabled, the Llama 3.2 model weights download automatically on first launch.
+          {% endif %}
+        </p>
+
+        <div class="edition-action">
+          <a href="{{ meta.standard.download_url }}" class="btn btn-primary btn-block btn-telemetry">
+            {% if current_lang == 'ru' %}Скачать Standard ({{ meta.standard.size_mb }}) ↓{% else %}Download Standard ({{ meta.standard.size_mb }}) ↓{% endif %}
+          </a>
+          <div class="edition-filename-row">
+            <span class="file-label">File:</span>
+            <span class="file-name">{{ meta.standard.filename }}</span>
+          </div>
+        </div>
+
+        <!-- Level 3: Optional integrity verification (Expandable) -->
+        <details class="checksum-disclosure">
+          <summary class="checksum-toggle">
+            <span class="toggle-text">{% if current_lang == 'ru' %}Показать контрольную сумму SHA-256{% else %}Show SHA-256 Checksum{% endif %}</span>
+            <span class="toggle-arrow">▾</span>
+          </summary>
+          <div class="checksum-box">
+            <div class="checksum-header">
+              <span class="checksum-label">{{ t('fwr_sha256') }}</span>
+              <button type="button" class="btn-copy-hash" data-hash="{{ meta.standard.sha256 }}" aria-label="Copy Standard Edition SHA-256 hash">
+                📋 {{ t('fwr_copy_hash') }}
+              </button>
+            </div>
+            <code class="checksum-code">{{ meta.standard.sha256 }}</code>
+          </div>
+        </details>
+      </div>
+
+      <!-- Offline Edition Card -->
+      <div class="download-edition-card offline-card">
+        <div class="edition-card-header">
+          <div class="edition-badge-group">
+            <span class="edition-airgap-badge">
+              {% if current_lang == 'ru' %}Полная автономность{% else %}Standalone / Offline{% endif %}
+            </span>
+            <span class="edition-platform-pill">Windows 10 / 11 (64-bit)</span>
+          </div>
+          <h3 class="edition-title">{{ meta.offline.edition }}</h3>
+          <span class="edition-size-tag">{{ meta.offline.size_mb }}</span>
+        </div>
+
+        <p class="edition-desc">
+          {% if current_lang == 'ru' %}
+            Автономный комплект со всеми встроенными компонентами. Работает без интернета сразу после установки, включая полностью изолированные компьютеры.
+          {% else %}
+            All-in-one standalone bundle with local runtime assets included. Operates with zero internet connection out of the box, ideal for air-gapped workstations.
+          {% endif %}
+        </p>
+
+        <div class="edition-action">
+          <a href="{{ meta.offline.download_url }}" class="btn btn-primary btn-software-cta btn-block">
+            {% if current_lang == 'ru' %}Скачать Offline ({{ meta.offline.size_mb }}) ↓{% else %}Download Offline ({{ meta.offline.size_mb }}) ↓{% endif %}
+          </a>
+          <div class="edition-filename-row">
+            <span class="file-label">File:</span>
+            <span class="file-name">{{ meta.offline.filename }}</span>
+          </div>
+        </div>
+
+        <!-- Level 3: Optional integrity verification (Expandable) -->
+        <details class="checksum-disclosure">
+          <summary class="checksum-toggle">
+            <span class="toggle-text">{% if current_lang == 'ru' %}Показать контрольную сумму SHA-256{% else %}Show SHA-256 Checksum{% endif %}</span>
+            <span class="toggle-arrow">▾</span>
+          </summary>
+          <div class="checksum-box">
+            <div class="checksum-header">
+              <span class="checksum-label">{{ t('fwr_sha256') }}</span>
+              <button type="button" class="btn-copy-hash" data-hash="{{ meta.offline.sha256 }}" aria-label="Copy Offline Edition SHA-256 hash">
+                📋 {{ t('fwr_copy_hash') }}
+              </button>
+            </div>
+            <code class="checksum-code">{{ meta.offline.sha256 }}</code>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Level 4: Short 3-step installation guide & PowerShell verification -->
+    <div class="fwr-install-instructions">
+      <div class="instructions-panel">
+        <h4 class="instructions-title">
+          {% if current_lang == 'ru' %}Быстрая установка в 3 шага{% else %}Simple 3-Step Setup{% endif %}
+        </h4>
+        <div class="instructions-steps-grid">
+          <div class="instruction-step">
+            <span class="step-badge">1</span>
+            <div class="step-body">
+              <strong>{% if current_lang == 'ru' %}Выберите редакцию{% else %}Choose Edition{% endif %}</strong>
+              <p>{% if current_lang == 'ru' %}Standard (154.7 МБ) для повседневной работы или Offline (610.3 МБ) для полной изоляции.{% else %}Standard (154.7 MB) for typical setups or Offline (610.3 MB) for air-gapped machines.{% endif %}</p>
+            </div>
+          </div>
+          <div class="instruction-step">
+            <span class="step-badge">2</span>
+            <div class="step-body">
+              <strong>{% if current_lang == 'ru' %}Запустите установщик{% else %}Run Installer{% endif %}</strong>
+              <p>{% if current_lang == 'ru' %}Запустите загруженный файл <code>.exe</code> и следуйте понятным шагам мастера Windows.{% else %}Run the downloaded <code>.exe</code> file and complete standard Windows setup.{% endif %}</p>
+            </div>
+          </div>
+          <div class="instruction-step">
+            <span class="step-badge">3</span>
+            <div class="step-body">
+              <strong>{% if current_lang == 'ru' %}Откройте приложение{% else %}Launch & Use{% endif %}</strong>
+              <p>{% if current_lang == 'ru' %}Локальная база данных SQLite инициализируется автоматически на вашем ПК.{% else %}Your private local SQLite database initializes automatically on your PC.{% endif %}</p>
+            </div>
+          </div>
+        </div>
+
+        <details class="instructions-verification-disclosure">
+          <summary class="verification-summary">
+            <span>{% if current_lang == 'ru' %}Как проверить подлинность файла через PowerShell (опционально){% else %}How to verify file integrity via PowerShell (Optional){% endif %}</span>
+            <span class="toggle-arrow">▾</span>
+          </summary>
+          <div class="verification-command-box">
+            <p>{% if current_lang == 'ru' %}Откройте PowerShell в папке «Загрузки» и выполните:{% else %}Open PowerShell in your Downloads folder and run:{% endif %}</p>
+            <code>Get-FileHash -Algorithm SHA256 .\Financial-War-Room-Setup-4.1.0.exe</code>
+            <p class="verification-hint">{% if current_lang == 'ru' %}Результат команды должен совпадать со значением SHA-256 в блоке выше.{% else %}The resulting hash should match the SHA-256 checksum displayed above.{% endif %}</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox Modal for Fullscreen Screenshots -->
+<div id="lightbox-modal" class="lightbox-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Screenshot Fullscreen Viewer">
+  <button id="lightbox-close" class="lightbox-close-btn" aria-label="Close Fullscreen View">×</button>
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="Fullscreen Screenshot">
+  </div>
+</div>
+{% endblock %}

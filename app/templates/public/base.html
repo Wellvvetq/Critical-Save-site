@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title or "Critical Save Studio" }}</title>
+  <meta name="description" content="{{ meta_description or 'Critical Save Studio — Independent game development studio crafting cinematic, atmospheric interactive experiences.' }}">
+  
+  <!-- Open Graph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title or 'Critical Save Studio' }}">
+  <meta property="og:description" content="{{ meta_description or 'Crafting cinematic, consequential interactive experiences.' }}">
+  <meta property="og:image" content="{{ url_for('static', filename='images/artwork/studio-hero-master.jpg', _external=True) }}">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Localized Hreflang alternates -->
+  {% if request.endpoint %}
+  <link rel="alternate" hreflang="en" href="{{ url_for(request.endpoint, lang='en', **request.view_args or {}) }}">
+  <link rel="alternate" hreflang="ru" href="{{ url_for(request.endpoint, lang='ru', **request.view_args or {}) }}">
+  <link rel="alternate" hreflang="x-default" href="{{ url_for(request.endpoint, lang='en', **request.view_args or {}) }}">
+  {% endif %}
+
+  <!-- Typography: Cinzel, Syne, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('cs_theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else {
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+      }
+    })();
+  </script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="cinematic-theme">
+  <!-- Accessible Skip Navigation -->
+  <a href="#main-content" class="skip-link">{{ t('skip_to_content') }}</a>
+
+
+  <!-- Header Navigation -->
+  <header class="site-header" role="banner">
+    <div class="container nav-inner">
+      <a href="{{ url_for('public.index', lang=current_lang) }}" class="brand-link" aria-label="Critical Save Studio Home">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" class="brand-mark" width="34" height="34" />
+        <div class="brand-meta">
+          <span class="brand-text">CRITICAL SAVE</span>
+          <span class="brand-sub">STUDIO</span>
+        </div>
+      </a>
+
+  <!-- Desktop & Mobile Nav Links -->
+      <nav id="primary-navigation" aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="{{ url_for('public.index', lang=current_lang) }}" class="{% if request.endpoint == 'public.index' %}active{% endif %}" {% if request.endpoint == 'public.index' %}aria-current="page"{% endif %}>
+              {{ t('nav_home') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" class="{% if request.endpoint == 'public.games_catalog' %}active{% endif %}" {% if request.endpoint == 'public.games_catalog' %}aria-current="page"{% endif %}>
+              {{ t('nav_games') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.software_catalog', lang=current_lang) }}" class="{% if request.endpoint and 'software' in request.endpoint %}active{% endif %}" {% if request.endpoint and 'software' in request.endpoint %}aria-current="page"{% endif %}>
+              {{ t('nav_software') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="nav-link-product {% if request.endpoint and 'product_fwr' in request.endpoint %}active{% endif %}" {% if request.endpoint and 'product_fwr' in request.endpoint %}aria-current="page"{% endif %}>
+              {{ t('nav_fwr') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.about', lang=current_lang) }}" class="{% if request.endpoint == 'public.about' %}active{% endif %}" {% if request.endpoint == 'public.about' %}aria-current="page"{% endif %}>
+              {{ t('nav_about') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.news', lang=current_lang) }}" class="{% if request.endpoint and ('news' in request.endpoint or 'article' in request.endpoint) %}active{% endif %}" {% if request.endpoint and ('news' in request.endpoint or 'article' in request.endpoint) %}aria-current="page"{% endif %}>
+              {{ t('nav_news') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.careers', lang=current_lang) }}" class="{% if request.endpoint == 'public.careers' %}active{% endif %}" {% if request.endpoint == 'public.careers' %}aria-current="page"{% endif %}>
+              {{ t('nav_careers') }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('public.contact', lang=current_lang) }}" class="{% if request.endpoint == 'public.contact' %}active{% endif %}" {% if request.endpoint == 'public.contact' %}aria-current="page"{% endif %}>
+              {{ t('nav_contact') }}
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Theme Toggle Button -->
+        <button type="button" id="theme-toggle" class="theme-toggle-btn" aria-label="{{ t('theme_toggle') }}" title="{{ t('theme_toggle') }}">
+          <span class="theme-toggle-icon">🌙</span>
+        </button>
+
+        <!-- Language Switcher Component -->
+        <div class="lang-switcher" role="group" aria-label="{{ t('lang_switch_label') }}">
+          <a href="{{ url_for(request.endpoint or 'public.index', lang='en', **request.view_args or {}) }}" 
+             class="lang-btn {% if current_lang == 'en' %}active{% endif %}"
+             aria-current="{% if current_lang == 'en' %}true{% else %}false{% endif %}">
+            EN
+          </a>
+          <span class="lang-divider">/</span>
+          <a href="{{ url_for(request.endpoint or 'public.index', lang='ru', **request.view_args or {}) }}" 
+             class="lang-btn {% if current_lang == 'ru' %}active{% endif %}"
+             aria-current="{% if current_lang == 'ru' %}true{% else %}false{% endif %}">
+            RU
+          </a>
+        </div>
+
+        <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false" aria-label="Toggle navigation menu">
+          <span class="toggle-icon">☰</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Anchor -->
+  <main id="main-content" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-telemetry-ribbon" style="display: none;" aria-hidden="true">
+        <span class="ribbon-tag">[CSS-CORE-TERMINAL]</span>
+        <span class="ribbon-status">SIGNAL LEVEL: OPTIMAL</span>
+        <span class="ribbon-node">NODE: STATION-PRIMARY</span>
+        <span class="ribbon-ping">LATENCY: 14MS</span>
+      </div>
+
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="{{ url_for('public.index', lang=current_lang) }}" class="brand-link">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="" class="brand-mark" width="32" height="32" />
+            <span class="brand-text">Critical Save Studio</span>
+          </a>
+          <p class="footer-desc">{{ t('footer_disclaimer') }}</p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-links-title">Studio</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('public.games_catalog', lang=current_lang) }}">{{ t('nav_games') }}</a></li>
+            <li><a href="{{ url_for('public.about', lang=current_lang) }}">{{ t('nav_about') }}</a></li>
+            <li><a href="{{ url_for('public.news', lang=current_lang) }}">{{ t('nav_news') }}</a></li>
+            <li><a href="{{ url_for('public.careers', lang=current_lang) }}">{{ t('nav_careers') }}</a></li>
+            <li><a href="{{ url_for('public.contact', lang=current_lang) }}">{{ t('nav_contact') }}</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-links-title">Products & Software</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('public.software_catalog', lang=current_lang) }}">{{ t('nav_software') }} Catalog</a></li>
+            <li><a href="{{ url_for('public.product_fwr', lang=current_lang) }}">Financial War Room</a></li>
+            <li><a href="{{ url_for('public.product_fwr', lang=current_lang) }}#download-center">Download Center</a></li>
+            <li><a href="{{ url_for('admin.login') }}">{{ t('nav_admin') }}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="copyright">&copy; 2026 {{ t('footer_rights') }}</div>
+        <div class="footer-theme-controls" role="group" aria-label="Theme selector">
+          <span class="theme-control-label">{{ t('theme_toggle') }}:</span>
+          <button type="button" class="btn-theme-select" data-theme-val="dark">Dark</button>
+          <span class="theme-sep">/</span>
+          <button type="button" class="btn-theme-select" data-theme-val="light">Light</button>
+          <span class="theme-sep">/</span>
+          <button type="button" class="btn-theme-select" data-theme-val="system">System</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

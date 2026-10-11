@@ -1,0 +1,64 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Inbound Inquiries{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 style="font-size: 1.8rem; color: #fff;">Inbound Inquiries & Dispatches</h1>
+    <p style="font-size: 0.95rem; color: #94a3b8; margin-top: 4px;">Submissions captured from public contact forms, persisted with audit trails.</p>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Sender</th>
+        <th>Subject</th>
+        <th>Message Snippet</th>
+        <th>Delivery Status</th>
+        <th>Received</th>
+        <th style="text-align: right;">Status Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for inq in inquiries %}
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: #fff;">{{ inq.name }}</div>
+            <div style="font-family: monospace; font-size: 0.78rem; color: #64748b;">{{ inq.email }}</div>
+          </td>
+          <td><span style="color: var(--accent-amber);">{{ inq.subject }}</span></td>
+          <td style="max-width: 300px; color: #94a3b8; font-size: 0.88rem;">{{ inq.message[:120] }}{% if inq.message|length > 120 %}...{% endif %}</td>
+          <td>
+            {% if inq.email_delivered %}
+              <span class="badge badge-success">Delivered via SMTP</span>
+            {% else %}
+              <span class="badge badge-secondary" title="{{ inq.delivery_error or 'Stored in DB queue' }}">Queued in DB</span>
+            {% endif %}
+          </td>
+          <td style="font-size: 0.82rem; color: #94a3b8;">{{ inq.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td style="text-align: right;">
+            <form method="POST" action="{{ url_for('admin.inquiry_status_update', inquiry_id=inq.id) }}" style="display: inline-flex; gap: 6px;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <select name="status" class="form-select" style="padding: 4px 8px; font-size: 0.78rem; width: auto;" onchange="this.form.submit()">
+                <option value="new" {% if inq.status == 'new' %}selected{% endif %}>New</option>
+                <option value="in_review" {% if inq.status == 'in_review' %}selected{% endif %}>In Review</option>
+                <option value="processed" {% if inq.status == 'processed' %}selected{% endif %}>Processed</option>
+                <option value="archived" {% if inq.status == 'archived' %}selected{% endif %}>Archived</option>
+              </select>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">
+            No inquiries recorded. The queue is currently clear.
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

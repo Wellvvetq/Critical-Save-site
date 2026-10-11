@@ -1,0 +1,96 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<section class="section catalog-page-section">
+  <div class="container">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker" style="display: none;" aria-hidden="true">[ PORTFOLIO RECON // ACTIVE DIRECTIVES ]</span>
+        <span class="section-eyebrow">Creative Portfolio</span>
+        <h1 class="section-title">{{ t('catalog_title') }}</h1>
+        <p class="section-desc">{{ t('catalog_subtitle') }}</p>
+      </div>
+
+    <!-- Category Filter Pills matching Reference -->
+    <div class="games-noir-filter-bar" role="group" aria-label="Genre Filters">
+      <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" 
+         class="noir-filter-pill {% if not active_genre %}active{% endif %}">
+        {{ t('filter_all') }}
+      </a>
+      <a href="{{ url_for('public.games_catalog', lang=current_lang, genre='Выживание' if current_lang == 'ru' else 'Survival') }}" 
+         class="noir-filter-pill {% if active_genre in ['Выживание', 'Survival'] %}active{% endif %}">
+        {% if current_lang == 'ru' %}Выживание{% else %}Survival{% endif %}
+      </a>
+      <a href="{{ url_for('public.games_catalog', lang=current_lang, genre='Исследование' if current_lang == 'ru' else 'Investigative') }}" 
+         class="noir-filter-pill {% if active_genre in ['Исследование', 'Investigative'] %}active{% endif %}">
+        {% if current_lang == 'ru' %}Исследование{% else %}Investigation{% endif %}
+      </a>
+      <a href="{{ url_for('public.games_catalog', lang=current_lang, genre='Головоломка' if current_lang == 'ru' else 'Puzzle') }}" 
+         class="noir-filter-pill {% if active_genre in ['Головоломка', 'Puzzle'] %}active{% endif %}">
+        {% if current_lang == 'ru' %}Головоломка{% else %}Puzzle{% endif %}
+      </a>
+      <a href="{{ url_for('public.games_catalog', lang=current_lang, genre='Нарратив' if current_lang == 'ru' else 'Narrative') }}" 
+         class="noir-filter-pill {% if active_genre in ['Нарратив', 'Narrative'] %}active{% endif %}">
+        {% if current_lang == 'ru' %}Нарратив{% else %}Narrative{% endif %}
+      </a>
+      <a href="{{ url_for('public.games_catalog', lang=current_lang, genre='Эксперимент' if current_lang == 'ru' else 'Experiment') }}" 
+         class="noir-filter-pill {% if active_genre in ['Эксперимент', 'Experiment'] %}active{% endif %}">
+        {% if current_lang == 'ru' %}Эксперимент{% else %}Experiment{% endif %}
+      </a>
+    </div>
+
+    <!-- Games Vertical Stream matching Reference Panel 2 -->
+    <div class="games-noir-cards-stack">
+      {% if games %}
+        {% for game in games %}
+          <article class="games-noir-row-card">
+            <div class="card-art-col">
+              {% if 'meridian' in game.slug %}
+                <img src="{{ url_for('static', filename='images/artwork/hollow-meridian-dam-desktop.jpg') }}" alt="{{ game.get_title(current_lang) }}" loading="lazy">
+              {% elif 'aurora' in game.slug %}
+                <img src="{{ url_for('static', filename='images/artwork/aurora-keyart-desktop.jpg') }}" alt="{{ game.get_title(current_lang) }}" loading="lazy">
+              {% else %}
+                <img src="{{ url_for('static', filename='images/artwork/aegis-decay-landscape-desktop.jpg') }}" alt="{{ game.get_title(current_lang) }}" loading="lazy">
+              {% endif %}
+              <div class="card-status-pill {% if game.status == 'prototype' %}status-proto{% elif game.status == 'concept' %}status-concept{% else %}status-prod{% endif %}">
+                {{ game.get_status_display(current_lang) }}
+              </div>
+            </div>
+            <div class="card-details-col">
+              <h2 class="card-game-title">
+                <a href="{{ url_for('public.game_detail', lang=current_lang, slug=game.slug) }}">{{ game.get_title(current_lang) }}</a>
+              </h2>
+              <p class="card-game-desc">{{ game.get_short_description(current_lang) }}</p>
+              <div class="card-meta-pills">
+                <span class="meta-pill">{{ game.platform or 'PC' }}</span>
+                {% if game.get_genre(current_lang) %}
+                  <span class="meta-pill">{{ game.get_genre(current_lang) }}</span>
+                {% endif %}
+              </div>
+              <a href="{{ url_for('public.game_detail', lang=current_lang, slug=game.slug) }}" 
+                 class="card-arrow-circle" aria-label="Inspect {{ game.get_title(current_lang) }}">→</a>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <!-- Fallback static projects matching Reference Panel 2 -->
+        <article class="games-noir-row-card">
+          <div class="card-art-col">
+            <img src="{{ url_for('static', filename='images/artwork/aegis-decay-landscape-desktop.jpg') }}" alt="Aegis Decay" loading="lazy">
+            <div class="card-status-pill status-prod">{% if current_lang == 'ru' %}В активном производстве{% else %}In Active Production{% endif %}</div>
+          </div>
+          <div class="card-details-col">
+            <h2 class="card-game-title"><a href="{{ url_for('public.game_detail', lang=current_lang, slug='project-aegis-decay') }}">Aegis Decay</a></h2>
+            <p class="card-game-desc">{% if current_lang == 'ru' %}Клаустрофобный научно-фантастический выживательный нарратив в недрах угасающего орбитального завода.{% else %}Claustrophobic sci-fi survival narrative inside the core of a dying orbital foundry.{% endif %}</p>
+            <div class="card-meta-pills">
+              <span class="meta-pill">PC (Steam)</span>
+              <span class="meta-pill">{% if current_lang == 'ru' %}Выживание{% else %}Survival{% endif %}</span>
+            </div>
+            <a href="{{ url_for('public.game_detail', lang=current_lang, slug='project-aegis-decay') }}" class="card-arrow-circle">→</a>
+          </div>
+        </article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

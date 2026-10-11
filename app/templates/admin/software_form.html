@@ -1,0 +1,82 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if product %}Edit Software Product{% else %}New Software Product{% endif %}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">{% if product %}Edit Product: {{ product.title_en }}{% else %}Register Software Product{% endif %}</h1>
+    <p class="admin-header-subtitle">Configure identity, bilingual copywriting, and technical specs.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.software_list') }}" class="btn-noir-secondary">← Back to Software Hub</a>
+  </div>
+</div>
+
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">1. Product Identity & Slug</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-group">
+        <label class="form-label">Product Name (EN)</label>
+        <input type="text" name="title_en" class="form-control" value="{{ product.title_en if product else '' }}" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL Slug</label>
+        <input type="text" name="slug" class="form-control" value="{{ product.slug if product else '' }}" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Product Name (RU)</label>
+        <input type="text" name="title_ru" class="form-control" value="{{ product.title_ru if product and product.title_ru else '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <input type="text" name="category" class="form-control" value="{{ product.category if product else 'Desktop Application' }}">
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">2. Bilingual Copywriting & Descriptions</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-group">
+        <label class="form-label">Tagline (EN)</label>
+        <input type="text" name="tagline_en" class="form-control" value="{{ product.tagline_en if product and product.tagline_en else '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tagline (RU)</label>
+        <input type="text" name="tagline_ru" class="form-control" value="{{ product.tagline_ru if product and product.tagline_ru else '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Short Description (EN)</label>
+        <textarea name="short_description_en" class="form-control">{{ product.short_description_en if product and product.short_description_en else '' }}</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Short Description (RU)</label>
+        <textarea name="short_description_ru" class="form-control">{{ product.short_description_ru if product and product.short_description_ru else '' }}</textarea>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <label style="display: inline-flex; align-items: center; gap: 8px; color: var(--admin-text-platinum); font-size: 0.9rem; cursor: pointer;">
+        <input type="checkbox" name="is_published" value="1" {% if not product or product.is_published %}checked{% endif %}>
+        Mark as Published
+      </label>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <button type="submit" class="btn-noir-admin">
+        💾 Save Software Product
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

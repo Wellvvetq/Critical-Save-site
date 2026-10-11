@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial War Room — Автономная система личных финансов | Critical Save Studio</title>
+  <meta name="description" content="fwr_subheadline">
+  
+  <!-- Open Graph / Social Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Financial War Room — Автономная система личных финансов | Critical Save Studio">
+  <meta property="og:description" content="fwr_subheadline">
+  <meta property="og:image" content="http://127.0.0.1:5000/static/images/artwork/studio-hero-master.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Localized Hreflang alternates -->
+  
+  <link rel="alternate" hreflang="en" href="/en/products/financial-war-room">
+  <link rel="alternate" hreflang="ru" href="/ru/products/financial-war-room">
+  <link rel="alternate" hreflang="x-default" href="/en/products/financial-war-room">
+  
+
+  <!-- Typography: Cinzel, Syne, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/svg+xml" href="http://127.0.0.1:5000/static/images/logo.svg">
+  <link rel="stylesheet" href="http://127.0.0.1:5000/static/css/main.css">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('cs_theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else {
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+      }
+    })();
+  </script>
+  
+</head>
+<body style="background: #050811; padding: 40px 0; min-height: 100vh;">
+<section id="download-center" class="section section-fwr-download" aria-labelledby="fwr-download-title">
+  <div class="container">
+    <!-- Level 1: Product identity & supported platform -->
+    <div class="section-editorial-header text-center-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker" style="display: none;" aria-hidden="true">[ PRODUCTION RELEASE // OFFICIAL REPOSITORY ]</span>
+        <span class="section-eyebrow">Financial War Room v4.1.0</span>
+        <h2 id="fwr-download-title" class="section-title">Центр загрузки</h2>
+        <p class="section-desc">
+          
+            Официальные проверенные сборки для <strong>Windows 10 / 11 (64-bit)</strong>. Выберите подходящую редакцию для вашего компьютера.
+          
+        </p>
+      </div>
+    </div>
+
+    <!-- Level 2: Two prominent installation choices (Standard & Offline) -->
+    <div class="download-cards-grid">
+      <!-- Standard Edition Card -->
+      <div class="download-edition-card standard-card">
+        <div class="edition-card-header">
+          <div class="edition-badge-group">
+            <span class="edition-recommended-badge">
+              Рекомендуется
+            </span>
+            <span class="edition-platform-pill">Windows 10 / 11 (64-bit)</span>
+          </div>
+          <h3 class="edition-title">Standard Edition</h3>
+          <span class="edition-size-tag">154.7 MB</span>
+        </div>
+
+        <p class="edition-desc">
+          
+            Компактный установщик с полным функционалом. Если вы включите локальный AI, модель Llama 3.2 будет загружена при первом запуске через интернет.
+          
+        </p>
+
+        <div class="edition-action">
+          <a href="/download/fwr/standard?lang=ru" class="btn btn-primary btn-block btn-telemetry">
+            Скачать Standard (154.7 MB) ↓
+          </a>
+          <div class="edition-filename-row">
+            <span class="file-label">File:</span>
+            <span class="file-name">Financial-War-Room-Setup-4.1.0.exe</span>
+          </div>
+        </div>
+
+        <!-- Level 3: Optional integrity verification (Expandable) -->
+        <details class="checksum-disclosure">
+          <summary class="checksum-toggle">
+            <span class="toggle-text">Показать контрольную сумму SHA-256</span>
+            <span class="toggle-arrow">▾</span>
+          </summary>
+          <div class="checksum-box">
+            <div class="checksum-header">
+              <span class="checksum-label">Контрольная сумма SHA-256</span>
+              <button type="button" class="btn-copy-hash" data-hash="ffc7e7bc2e7338ea1cf1c5a8181ce31a6e8e2d0acdd1fac0cc2f3bde2ac6e206" aria-label="Copy Standard Edition SHA-256 hash">
+                📋 Скопировать SHA-256
+              </button>
+            </div>
+            <code class="checksum-code">ffc7e7bc2e7338ea1cf1c5a8181ce31a6e8e2d0acdd1fac0cc2f3bde2ac6e206</code>
+          </div>
+        </details>
+      </div>
+
+      <!-- Offline Edition Card -->
+      <div class="download-edition-card offline-card">
+        <div class="edition-card-header">
+          <div class="edition-badge-group">
+            <span class="edition-airgap-badge">
+              Полная автономность
+            </span>
+            <span class="edition-platform-pill">Windows 10 / 11 (64-bit)</span>
+          </div>
+          <h3 class="edition-title">Offline Edition</h3>
+          <span class="edition-size-tag">610.3 MB</span>
+        </div>
+
+        <p class="edition-desc">
+          
+            Автономный комплект со всеми встроенными компонентами. Работает без интернета сразу после установки, включая полностью изолированные компьютеры.
+          
+        </p>
+
+        <div class="edition-action">
+          <a href="/download/fwr/offline?lang=ru" class="btn btn-primary btn-software-cta btn-block">
+            Скачать Offline (610.3 MB) ↓
+          </a>
+          <div class="edition-filename-row">
+            <span class="file-label">File:</span>
+            <span class="file-name">Financial-War-Room-Offline-Setup-4.1.0.exe</span>
+          </div>
+        </div>
+
+        <!-- Level 3: Optional integrity verification (Expandable) -->
+        <details class="checksum-disclosure">
+          <summary class="checksum-toggle">
+            <span class="toggle-text">Показать контрольную сумму SHA-256</span>
+            <span class="toggle-arrow">▾</span>
+          </summary>
+          <div class="checksum-box">
+            <div class="checksum-header">
+              <span class="checksum-label">Контрольная сумма SHA-256</span>
+              <button type="button" class="btn-copy-hash" data-hash="e4052b04e1f65d119e9b7a4d36e7a21beed784aff338e527990535f013f9573c" aria-label="Copy Offline Edition SHA-256 hash">
+                📋 Скопировать SHA-256
+              </button>
+            </div>
+            <code class="checksum-code">e4052b04e1f65d119e9b7a4d36e7a21beed784aff338e527990535f013f9573c</code>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Level 4: Short 3-step installation guide & PowerShell verification -->
+    <div class="fwr-install-instructions">
+      <div class="instructions-panel">
+        <h4 class="instructions-title">
+          Быстрая установка в 3 шага
+        </h4>
+        <div class="instructions-steps-grid">
+          <div class="instruction-step">
+            <span class="step-badge">1</span>
+            <div class="step-body">
+              <strong>Выберите редакцию</strong>
+              <p>Standard (154.7 МБ) для повседневной работы или Offline (610.3 МБ) для полной изоляции.</p>
+            </div>
+          </div>
+          <div class="instruction-step">
+            <span class="step-badge">2</span>
+            <div class="step-body">
+              <strong>Запустите установщик</strong>
+              <p>Запустите загруженный файл <code>.exe</code> и следуйте понятным шагам мастера Windows.</p>
+            </div>
+          </div>
+          <div class="instruction-step">
+            <span class="step-badge">3</span>
+            <div class="step-body">
+              <strong>Откройте приложение</strong>
+              <p>Локальная база данных SQLite инициализируется автоматически на вашем ПК.</p>
+            </div>
+          </div>
+        </div>
+
+        <details class="instructions-verification-disclosure">
+          <summary class="verification-summary">
+            <span>Как проверить подлинность файла через PowerShell (опционально)</span>
+            <span class="toggle-arrow">▾</span>
+          </summary>
+          <div class="verification-command-box">
+            <p>Откройте PowerShell в папке «Загрузки» и выполните:</p>
+            <code>Get-FileHash -Algorithm SHA256 .\Financial-War-Room-Setup-4.1.0.exe</code>
+            <p class="verification-hint">Результат команды должен совпадать со значением SHA-256 в блоке выше.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="http://127.0.0.1:5000/static/js/main.js"></script>
+</body>
+</html>

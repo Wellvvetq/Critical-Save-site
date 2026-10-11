@@ -1,0 +1,89 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Software Releases & Verification Gate{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">Releases & Download Gate</h1>
+    <p class="admin-header-subtitle">Enforce 4-stage release verification before distributing installers to users.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.release_create') }}" class="btn-noir-admin">+ Stage New Release</a>
+  </div>
+</div>
+
+<div class="admin-card" style="border-left: 4px solid var(--admin-accent-violet); margin-bottom: 24px;">
+  <div style="font-size: 0.88rem; color: var(--admin-text-silver);">
+    <strong style="color: var(--admin-text-platinum);">🛡 4-Stage Release Verification Gate Rules:</strong>
+    <ol style="margin: 8px 0 0 18px; padding: 0; line-height: 1.6;">
+      <li><strong>Artifact Staging:</strong> Physical installer files exist on staging storage or valid URL.</li>
+      <li><strong>Checksum Telemetry:</strong> File size and SHA-256 computed and matched on server.</li>
+      <li><strong>Backend Architecture Verification:</strong> Packaged local AI backend passes integrity smoke test.</li>
+      <li><strong>Owner Sign-Off:</strong> Only an account with the <code>Owner</code> role can authorize public release status.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="admin-card" style="padding: 0; overflow: hidden;">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Product & Version</th>
+        <th>Channel</th>
+        <th>Standard Installer</th>
+        <th>Offline Installer</th>
+        <th>Verification Gate</th>
+        <th>Live Status</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rel in releases %}
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: var(--admin-text-platinum);">{{ rel.product.title_en }}</div>
+            <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--admin-accent-iris);">v{{ rel.version }}</div>
+          </td>
+          <td><span class="badge badge-draft">{{ rel.release_channel }}</span></td>
+          <td>
+            <div style="font-size: 0.8rem; color: var(--admin-text-silver);">{{ rel.standard_filename }}</div>
+            <div style="font-size: 0.72rem; color: var(--admin-text-muted); font-family: var(--font-mono);">{{ rel.standard_size_display }} • {{ rel.standard_sha256[:12] }}...</div>
+          </td>
+          <td>
+            <div style="font-size: 0.8rem; color: var(--admin-text-silver);">{{ rel.offline_filename }}</div>
+            <div style="font-size: 0.72rem; color: var(--admin-text-muted); font-family: var(--font-mono);">{{ rel.offline_size_display }} • {{ rel.offline_sha256[:12] }}...</div>
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 2px; font-size: 0.75rem;">
+              <span style="color: {% if rel.file_exists_verified %}var(--admin-status-live){% else %}var(--admin-status-danger){% endif %};">
+                {% if rel.file_exists_verified %}✓ Files Found{% else %}✗ File Missing{% endif %}
+              </span>
+              <span style="color: {% if rel.hash_verified %}var(--admin-status-live){% else %}var(--admin-status-danger){% endif %};">
+                {% if rel.hash_verified %}✓ SHA-256 Valid{% else %}✗ Bad Checksum{% endif %}
+              </span>
+              <span style="color: {% if rel.backend_verified %}var(--admin-status-live){% else %}var(--admin-status-danger){% endif %};">
+                {% if rel.backend_verified %}✓ Backend Passed{% else %}⚠ Backend Unverified{% endif %}
+              </span>
+            </div>
+          </td>
+          <td>
+            {% if rel.is_live %}
+              <span class="badge badge-live">LIVE</span>
+            {% else %}
+              <span class="badge badge-draft">STAGING</span>
+            {% endif %}
+          </td>
+          <td style="text-align: right;">
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <a href="{{ url_for('admin.release_edit', release_id=rel.id) }}" class="btn-noir-secondary" style="padding: 4px 10px; font-size: 0.78rem;">
+                Audit & Edit
+              </a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

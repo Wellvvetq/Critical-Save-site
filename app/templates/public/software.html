@@ -1,0 +1,104 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<section class="section software-catalog-section" aria-labelledby="software-title">
+  <div class="container">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="section-eyebrow">Engineering Wing</span>
+        <h1 id="software-title" class="section-title">
+          {% if current_lang == 'ru' %}Программное обеспечение и инструменты{% else %}Software & Digital Tools{% endif %}
+        </h1>
+        <p class="section-desc">
+          {% if current_lang == 'ru' %}
+            Самостоятельные прикладные системы для компьютера, инструменты анализа данных и локальные утилиты, решающие реальные задачи.
+          {% else %}
+            Autonomous desktop software, data intelligence engines, and local-first utilities built to solve tangible human challenges.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Flagship Software Showcase: Financial War Room -->
+    <div class="software-flagship-dossier">
+      <div class="software-media-col">
+        <div class="software-media-frame">
+          <img src="{{ url_for('static', filename='images/products/fwr/dashboard-main.png') }}" 
+               alt="Financial War Room Desktop Interface" loading="lazy">
+          <div class="software-badge-cluster">
+            <span class="badge-status-released">v{{ meta.version }} Released</span>
+            <span class="badge-os-tag">Windows 10 / 11 (64-bit)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="software-info-col">
+        <div class="software-meta-row">
+          <span class="meta-tag-category">Desktop Application · Fintech Core</span>
+          <span class="meta-tag-release">October 2026</span>
+        </div>
+
+        <h2 class="software-product-title">Financial War Room</h2>
+        <p class="software-tagline">{{ t('fwr_subtitle') }}</p>
+        <p class="software-desc">
+          {% if current_lang == 'ru' %}
+            Детерминированный командный центр для личных финансов. Моделирование траектории денежных потоков на 180 дней, расчет стратегий погашения кредитов (Snowball / Avalanche) и приватный локальный AI-советник (Llama 3.2 via Ollama) без передачи финансовой информации в облака.
+          {% else %}
+            Deterministic personal finance command center. 180-day cash flow runway projections, mathematical debt liquidation modeling (Snowball / Avalanche), and private local AI advisor (Llama 3.2 via Ollama) without transmitting sensitive ledger data to external cloud APIs.
+          {% endif %}
+        </p>
+
+        <!-- Feature Specs Grid -->
+        <div class="software-specs-grid">
+          <div class="spec-card">
+            <span class="spec-label">Storage</span>
+            <span class="spec-val">Local-First SQLite</span>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Math Engine</span>
+            <span class="spec-val">Decimal Fixed-Point</span>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Forecasting</span>
+            <span class="spec-val">180d Liquidity Model</span>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">Private Intelligence</span>
+            <span class="spec-val">Local Ollama AI (Read-Only)</span>
+          </div>
+        </div>
+
+        <div class="software-actions-group">
+          <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="btn btn-primary">
+            {% if current_lang == 'ru' %}Подробнее о продукте →{% else %}Product Overview →{% endif %}
+          </a>
+          <a href="{{ url_for('public.product_fwr', lang=current_lang) }}#download-center" class="btn btn-secondary">
+            {% if current_lang == 'ru' %}Центр загрузки (.exe) ↓{% else %}Download Center (.exe) ↓{% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software Gallery Preview Strip -->
+    <div class="software-gallery-strip">
+      <div class="gallery-strip-header">
+        <h3 class="strip-title">{% if current_lang == 'ru' %}Скриншоты реального интерфейса{% else %}Verified Production Screenshots{% endif %}</h3>
+      </div>
+      <div class="gallery-strip-grid">
+        <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="strip-item">
+          <img src="{{ url_for('static', filename='images/products/fwr/cashflow-forecast.png') }}" alt="Cash Flow Forecast" loading="lazy">
+          <span class="strip-caption">Cash Flow Forecaster</span>
+        </a>
+        <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="strip-item">
+          <img src="{{ url_for('static', filename='images/products/fwr/debt-engine.png') }}" alt="Debt Payoff Engine" loading="lazy">
+          <span class="strip-caption">Debt Payoff Engine</span>
+        </a>
+        <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="strip-item">
+          <img src="{{ url_for('static', filename='images/products/fwr/transactions-ledger.png') }}" alt="Transactions Ledger" loading="lazy">
+          <span class="strip-caption">Audit Trail Ledger</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

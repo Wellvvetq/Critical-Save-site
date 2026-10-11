@@ -1,0 +1,91 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<section class="section careers-page-section">
+  <div class="container" style="max-width: 1100px;">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker">[ EXPEDITION REQUISITION // CREW ROSTER ]</span>
+        <h1 class="section-title">{{ t('careers_title') }}</h1>
+        <p class="section-desc">{{ t('careers_subtitle') }}</p>
+      </div>
+    </div>
+
+    <!-- Working Philosophy Dossier Box -->
+    <div class="careers-philosophy-dossier">
+      <div class="dossier-pill-header">
+        <span class="pill-code">[ CULTURE PROTOCOL ]</span>
+        <h2 class="pill-title">{{ t('careers_intro_title') }}</h2>
+      </div>
+      <p class="pill-desc">
+        {{ t('careers_intro_desc') }}
+      </p>
+      <div class="pill-tags-grid">
+        <div class="pill-tag-item"><span>▸</span> ZERO CRUNCH ETHOS</div>
+        <div class="pill-tag-item"><span>▸</span> DIRECT TECHNICAL AUTONOMY</div>
+        <div class="pill-tag-item"><span>▸</span> COGNITIVE RESTORATION FOCUS</div>
+      </div>
+    </div>
+
+    <!-- Open Station Roles List -->
+    <div class="careers-positions-section">
+      <div class="section-editorial-header" style="margin-bottom: 30px;">
+        <h2 class="section-title" style="font-size: 1.8rem;">{{ t('open_positions') }}</h2>
+      </div>
+
+      {% if careers %}
+        <div class="station-roles-stack">
+          {% for role in careers %}
+            <article class="station-role-card">
+              <div class="role-telemetry-header">
+                <span class="role-index">[STATION BILLET // {{ "%02d"|format(loop.index) }}]</span>
+                <span class="role-status">REQUISITION: ACTIVE</span>
+              </div>
+
+              <div class="role-main-grid">
+                <div class="role-content-col">
+                  <h3 class="role-title">{{ role.get_title(current_lang) }}</h3>
+                  
+                  <div class="role-meta-ribbon">
+                    <span class="role-dept">{{ role.get_department(current_lang) }}</span>
+                    <span class="role-sep">//</span>
+                    <span class="role-loc">{{ role.get_location(current_lang) }}</span>
+                  </div>
+
+                  <p class="role-desc">
+                    {{ role.get_description(current_lang) }}
+                  </p>
+
+                  {% if role.get_requirements(current_lang) %}
+                    <div class="role-requirements-box">
+                      <strong class="req-title">{{ t('requirements') }}</strong>
+                      <div class="req-content">{{ role.get_requirements(current_lang) }}</div>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="role-action-col">
+                  <a href="{{ url_for('public.contact', lang=current_lang) }}" class="btn btn-primary btn-sm" style="width: 100%;">
+                    {{ t('apply_button') }} →
+                  </a>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state-terminal">
+          <span class="terminal-prefix">[ STATION ROSTER: CURRENTLY STABLE ]</span>
+          <h3>{{ t('no_vacancies_title') }}</h3>
+          <p>{{ t('no_vacancies_desc') }}</p>
+          <div style="margin-top: 24px;">
+            <a href="{{ url_for('public.contact', lang=current_lang) }}" class="btn btn-secondary btn-sm">
+              {{ t('nav_contact') }} →
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

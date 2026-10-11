@@ -1,0 +1,126 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if release %}Audit Release v{{ release.version }}{% else %}Stage New Release{% endif %}{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">{% if release %}Audit Release: v{{ release.version }}{% else %}Stage New Software Release{% endif %}</h1>
+    <p class="admin-header-subtitle">Strict integrity checking and cryptographic verification.</p>
+  </div>
+  <div>
+    <a href="{{ url_for('admin.releases_list') }}" class="btn-noir-secondary">← Back to Releases</a>
+  </div>
+</div>
+
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">1. Product & Version Telemetry</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+      <div class="form-group">
+        <label class="form-label">Product</label>
+        <select name="product_id" class="form-control">
+          {% for p in products %}
+            <option value="{{ p.id }}" {% if release and release.product_id == p.id %}selected{% endif %}>{{ p.title_en }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Version Number</label>
+        <input type="text" name="version" class="form-control" value="{{ release.version if release else '5.0.0' }}" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Release Channel</label>
+        <select name="release_channel" class="form-control">
+          <option value="stable" {% if release and release.release_channel == 'stable' %}selected{% endif %}>stable</option>
+          <option value="preview" {% if release and release.release_channel == 'preview' %}selected{% endif %}>preview</option>
+          <option value="lts" {% if release and release.release_channel == 'lts' %}selected{% endif %}>lts</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">2. Standard Edition Artifact Details</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-group">
+        <label class="form-label">Filename</label>
+        <input type="text" name="standard_filename" class="form-control" value="{{ release.standard_filename if release else 'Avenor-Setup-5.0.0.exe' }}" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Size (e.g. 159.0 MB)</label>
+        <input type="text" name="standard_size_display" class="form-control" value="{{ release.standard_size_display if release else '159.0 MB' }}">
+      </div>
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label class="form-label">SHA-256 Checksum</label>
+        <input type="text" name="standard_sha256" class="form-control" style="font-family: var(--font-mono); font-size: 0.8rem;" value="{{ release.standard_sha256 if release else '' }}" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">3. Offline Air-Gapped Edition Artifact Details</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="form-group">
+        <label class="form-label">Filename</label>
+        <input type="text" name="offline_filename" class="form-control" value="{{ release.offline_filename if release else 'Avenor-Offline-Setup-5.0.0.exe' }}" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Size (e.g. 614.7 MB)</label>
+        <input type="text" name="offline_size_display" class="form-control" value="{{ release.offline_size_display if release else '614.7 MB' }}">
+      </div>
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label class="form-label">SHA-256 Checksum</label>
+        <input type="text" name="offline_sha256" class="form-control" style="font-family: var(--font-mono); font-size: 0.8rem;" value="{{ release.offline_sha256 if release else '' }}" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">4. 4-Stage Release Verification Gate Checklist</h2>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 14px; font-size: 0.9rem;">
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" name="file_exists_verified" value="1" {% if release and release.file_exists_verified %}checked{% endif %}>
+        <span><strong>Stage 1:</strong> Physical installer files exist on confirmed release location.</span>
+      </label>
+
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" name="hash_verified" value="1" {% if release and release.hash_verified %}checked{% endif %}>
+        <span><strong>Stage 2:</strong> Checksums independently computed and cryptographically match artifact bytes.</span>
+      </label>
+
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" name="backend_verified" value="1" {% if release and release.backend_verified %}checked{% endif %}>
+        <span><strong>Stage 3:</strong> Packaged local backend and AI model loading passed functional smoke tests.</span>
+      </label>
+
+      {% if session.get('role') in ['owner', 'admin'] %}
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--admin-accent-iris); margin-top: 8px; border-top: 1px solid var(--admin-border); padding-top: 12px;">
+          <input type="checkbox" name="owner_approved" value="1" {% if release and release.owner_approved %}checked{% endif %}>
+          <span><strong>Stage 4 (Owner Sign-off):</strong> I hereby authorize this release for immediate live public distribution.</span>
+        </label>
+      {% endif %}
+    </div>
+
+    <div style="margin-top: 24px;">
+      <button type="submit" class="btn-noir-admin">
+        💾 Save Release Telemetry
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

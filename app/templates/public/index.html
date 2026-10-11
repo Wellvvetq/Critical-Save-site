@@ -1,0 +1,294 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<!-- Cinematic Master Art Hero (Full-Bleed Reference Alignment) -->
+<section class="hero-section hero-panoramic-noir" aria-label="Studio Overview">
+  <div class="hero-backdrop-media">
+    <picture>
+      <source media="(max-width: 768px)" srcset="{{ url_for('static', filename='images/artwork/studio-hero-desktop.jpg') }}">
+      <img src="{{ url_for('static', filename='images/artwork/studio-hero-master.jpg') }}" 
+           alt="Critical Save Studio — Atmospheric Cinematic Mountain Concept Art"
+           class="hero-panoramic-img" fetchpriority="high">
+    </picture>
+    <div class="hero-gradient-overlay"></div>
+  </div>
+
+  <div class="container hero-noir-container">
+    <div class="hero-noir-content">
+      <h1 class="hero-headline hero-noir-headline">
+        <span class="headline-part headline-main">{{ t('hero_headline_1') }}</span>
+        <span class="headline-part headline-accent-violet">{{ t('hero_headline_2') }}</span>
+      </h1>
+
+      <p class="hero-lead hero-noir-lead">{{ t('hero_subheadline') }}</p>
+
+      <div class="hero-cta-group hero-noir-ctas">
+        <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" class="btn btn-primary btn-noir-accent">
+          {{ t('hero_cta_games') }} <span class="btn-arrow">→</span>
+        </a>
+        <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="btn btn-secondary btn-noir-fwr">
+          {{ t('hero_cta_software') }} <span class="btn-arrow">↓</span>
+        </a>
+      </div>
+
+      <div class="hero-editorial-brandmark">
+        <span class="brandmark-text">WORLDS<br>BEYOND<br>THE FRAME</span>
+        <div class="brandmark-line"></div>
+      </div>
+    </div>
+
+    <!-- Right-aligned Floating Feature Widget (Aegis Decay) matching reference -->
+    <div class="hero-noir-feature-card">
+      <div class="feature-card-index">01 / 03</div>
+      <h3 class="feature-card-name">Aegis Decay</h3>
+      <p class="feature-card-sub">
+        {% if current_lang == 'ru' %}Научно-фантастическое выживание{% else %}Sci-fi narrative survival{% endif %}
+      </p>
+      <div class="feature-card-nav">
+        <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" class="nav-arrow prev" aria-label="Previous Project">←</a>
+        <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" class="nav-arrow next" aria-label="Next Project">→</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Works: 3 Project Cards Layout matching Reference Panel 1 -->
+<section class="section section-showcase section-noir-showcase" aria-labelledby="featured-title">
+  <div class="container">
+    <div class="section-noir-header">
+      <div class="header-preamble">
+        <h2 id="featured-title" class="section-title section-title-serif">{{ t('section_featured_games') }}</h2>
+        <p class="section-desc section-desc-noir">{{ t('section_featured_games_sub') }}</p>
+      </div>
+      <div class="header-action">
+        <a href="{{ url_for('public.games_catalog', lang=current_lang) }}" class="link-noir-all">
+          {{ t('view_all_games') }} <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 3-Column Visual Grid matching Reference -->
+    <div class="noir-games-grid">
+      {% if featured_games %}
+        {% for game in featured_games %}
+          <article class="noir-game-card">
+            <a href="{{ url_for('public.game_detail', lang=current_lang, slug=game.slug) }}" class="card-media-anchor">
+              <div class="card-art-wrap">
+                {% if 'meridian' in game.slug %}
+                  <img src="{{ url_for('static', filename='images/artwork/hollow-meridian-dam-card.jpg') }}" alt="{{ game.get_title(current_lang) }}" loading="lazy">
+                {% elif 'aurora' in game.slug %}
+                  <img src="{{ url_for('static', filename='images/artwork/aurora-keyart-card.jpg') }}" alt="{{ game.get_title(current_lang) }}" loading="lazy">
+                {% else %}
+                  <img src="{{ url_for('static', filename='images/artwork/aegis-decay-landscape-card.jpg') }}" alt="{{ game.get_title(current_lang) }}" loading="lazy">
+                {% endif %}
+              </div>
+            </a>
+            <div class="card-info-wrap">
+              <h3 class="card-game-title">
+                <a href="{{ url_for('public.game_detail', lang=current_lang, slug=game.slug) }}">{{ game.get_title(current_lang) }}</a>
+              </h3>
+              <p class="card-game-desc">{{ game.get_short_description(current_lang) }}</p>
+              <div class="card-status-badge {% if game.status == 'prototype' %}status-proto{% elif game.status == 'concept' %}status-concept{% else %}status-prod{% endif %}">
+                {{ game.get_status_display(current_lang) }}
+              </div>
+              <div class="card-meta-line">
+                <span class="platform-tag">{{ game.platform or 'PC' }}</span>
+                {% if game.get_genre(current_lang) %}
+                  <div class="genre-tags-cluster">
+                    <span class="genre-tag">{{ game.get_genre(current_lang) }}</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <!-- Project 1: Aegis Decay -->
+        <article class="noir-game-card">
+          <a href="{{ url_for('public.game_detail', lang=current_lang, slug='project-aegis-decay') }}" class="card-media-anchor">
+            <div class="card-art-wrap">
+              <img src="{{ url_for('static', filename='images/artwork/aegis-decay-landscape-card.jpg') }}" alt="Aegis Decay Concept Art" loading="lazy">
+            </div>
+          </a>
+          <div class="card-info-wrap">
+            <h3 class="card-game-title"><a href="{{ url_for('public.game_detail', lang=current_lang, slug='project-aegis-decay') }}">Aegis Decay</a></h3>
+            <p class="card-game-desc">{% if current_lang == 'ru' %}Клаустрофобный sci-fi выживание в недрах угасающего орбитального завода.{% else %}Claustrophobic sci-fi survival narrative inside a decaying orbital factory.{% endif %}</p>
+            <div class="card-status-badge status-prod">{% if current_lang == 'ru' %}В активном производстве{% else %}In Active Production{% endif %}</div>
+            <div class="card-meta-line">
+              <span class="platform-tag">PC (Steam)</span>
+              <div class="genre-tags-cluster"><span class="genre-tag">{% if current_lang == 'ru' %}Выживание{% else %}Survival{% endif %}</span></div>
+            </div>
+          </div>
+        </article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Product Showcase: Financial War Room Split Banner matching Reference -->
+<section class="section section-product-spotlight section-fwr-noir-spotlight section-divisions" aria-labelledby="fwr-spotlight-title">
+  <div class="container">
+    <div class="fwr-noir-split-banner">
+      <div class="fwr-noir-content-col">
+        <h2 id="fwr-spotlight-title" class="fwr-noir-brand-title">FINANCIAL WAR ROOM</h2>
+        <p class="fwr-noir-subtitle">
+          {% if current_lang == 'ru' %}
+            Личный финансовый штаб с локальным AI-советником.
+          {% else %}
+            Personal Financial Headquarters with Local AI Intelligence.
+          {% endif %}
+        </p>
+        <p class="fwr-noir-lead-desc">
+          {% if current_lang == 'ru' %}
+            Анализируйте финансы, планируйте будущее, моделируйте сценарии и принимайте решения на основе данных — без передачи ваших данных в облако.
+          {% else %}
+            Analyze capital runway, project future liquidity, simulate scenarios, and make data-driven financial decisions with zero cloud exposure.
+          {% endif %}
+        </p>
+        <div class="fwr-noir-cta-row">
+          <a href="{{ url_for('public.product_fwr', lang=current_lang) }}" class="btn btn-primary btn-noir-accent">
+            {% if current_lang == 'ru' %}Подробнее о продукте →{% else %}Explore Product →{% endif %}
+          </a>
+          <a href="{{ url_for('public.software_catalog', lang=current_lang) }}" class="btn btn-secondary">
+            {% if current_lang == 'ru' %}Каталог ПО →{% else %}Software Hub →{% endif %}
+          </a>
+        </div>
+      </div>
+
+      <div class="fwr-noir-media-col">
+        <div class="fwr-noir-workstation-frame">
+          <img src="{{ url_for('static', filename='images/artwork/fwr-hero-desktop-desktop.jpg') }}" 
+               alt="Financial War Room Workstation and Interface" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Studio Manifesto / Core Axioms Spread -->
+<section class="section section-axioms" aria-labelledby="axioms-title">
+  <div class="container axioms-editorial-layout">
+    <div class="axioms-sidebar">
+      <div class="sticky-manifesto-block">
+        <span class="telemetry-marker">[ PHILOSOPHY // PROTOCOL-ZERO ]</span>
+        <h2 id="axioms-title" class="manifesto-giant-title">Atmosphere.<br>Consequence.<br>Precision.</h2>
+        <p class="manifesto-lead">{{ t('section_dev_spotlight_desc') }}</p>
+        <div class="manifesto-telemetry-stamp">
+          <div>CRITICAL SAVE STUDIO</div>
+          <div>WORLDS BEYOND THE FRAME</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="axioms-pillars-stack">
+      <div class="axiom-card">
+        <div class="axiom-telemetry-head">
+          <span class="axiom-num">[AXIOM // 01]</span>
+          <span class="axiom-freq">CORE AXIOM</span>
+        </div>
+        <h3 class="axiom-title">{{ t('pillar_1_title') }}</h3>
+        <p class="axiom-desc">{{ t('pillar_1_desc') }}</p>
+        <div class="axiom-accent-line"></div>
+      </div>
+
+      <div class="axiom-card">
+        <div class="axiom-telemetry-head">
+          <span class="axiom-num">[AXIOM // 02]</span>
+          <span class="axiom-freq">ACOUSTIC & VISUAL</span>
+        </div>
+        <h3 class="axiom-title">{{ t('pillar_2_title') }}</h3>
+        <p class="axiom-desc">{{ t('pillar_2_desc') }}</p>
+        <div class="axiom-accent-line"></div>
+      </div>
+
+      <div class="axiom-card">
+        <div class="axiom-telemetry-head">
+          <span class="axiom-num">[AXIOM // 03]</span>
+          <span class="axiom-freq">ENGINE RIGOR</span>
+        </div>
+        <h3 class="axiom-title">{{ t('pillar_3_title') }}</h3>
+        <p class="axiom-desc">{{ t('pillar_3_desc') }}</p>
+        <div class="axiom-accent-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Studio Journal / Transmission Feed -->
+{% if latest_articles %}
+<section class="section section-dispatches" aria-labelledby="journal-title">
+  <div class="container">
+    <div class="section-editorial-header">
+      <div class="header-preamble">
+        <span class="telemetry-marker">[ TRANSMISSION LOG // DISPATCHES ]</span>
+        <h2 id="journal-title" class="section-title">{{ t('section_latest_news') }}</h2>
+        <p class="section-desc">{{ t('section_latest_news_sub') }}</p>
+      </div>
+      <div class="header-action">
+        <a href="{{ url_for('public.news', lang=current_lang) }}" class="btn btn-secondary btn-sm">
+          {{ t('view_all_news') }} →
+        </a>
+      </div>
+    </div>
+
+    <div class="journal-editorial-grid">
+      <!-- Primary Feature Dispatch -->
+      {% set lead_article = latest_articles[0] %}
+      <article class="journal-lead-card">
+        {% if lead_article.cover_image %}
+          <div class="lead-media-wrap">
+            <img src="{{ lead_article.cover_image }}" alt="{{ lead_article.get_title(current_lang) }}" loading="lazy">
+            <span class="lead-media-tag">{{ lead_article.get_category(current_lang) }}</span>
+          </div>
+        {% endif %}
+        <div class="lead-content-wrap">
+          <div class="article-meta">
+            <span class="meta-cat">{{ lead_article.get_category(current_lang) }}</span>
+            <span class="meta-div">//</span>
+            <span class="meta-time">{{ lead_article.reading_time_minutes }} {{ t('reading_time') }}</span>
+          </div>
+          <h3 class="lead-article-title">
+            <a href="{{ url_for('public.article_detail', lang=current_lang, slug=lead_article.slug) }}">
+              {{ lead_article.get_title(current_lang) }}
+            </a>
+          </h3>
+          <p class="lead-article-excerpt">{{ lead_article.get_excerpt(current_lang) }}</p>
+          <div class="lead-article-action">
+            <a href="{{ url_for('public.article_detail', lang=current_lang, slug=lead_article.slug) }}" class="link-dispatch">
+              {{ t('read_more') }} →
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Secondary Dispatches Stack (if available) -->
+      {% if latest_articles|length > 1 %}
+        <div class="journal-secondary-stack">
+          {% for article in latest_articles[1:] %}
+            <article class="journal-stack-item">
+              <div class="article-meta">
+                <span class="meta-cat">{{ article.get_category(current_lang) }}</span>
+                <span class="meta-div">//</span>
+                <span class="meta-time">{{ article.reading_time_minutes }} {{ t('reading_time') }}</span>
+              </div>
+              <h4 class="stack-item-title">
+                <a href="{{ url_for('public.article_detail', lang=current_lang, slug=article.slug) }}">
+                  {{ article.get_title(current_lang) }}
+                </a>
+              </h4>
+              <p class="stack-item-excerpt">{{ article.get_excerpt(current_lang) }}</p>
+              <div class="stack-item-foot">
+                <a href="{{ url_for('public.article_detail', lang=current_lang, slug=article.slug) }}" class="link-dispatch">
+                  {{ t('read_more') }} →
+                </a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

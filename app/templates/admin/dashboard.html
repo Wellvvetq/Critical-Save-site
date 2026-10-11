@@ -1,0 +1,109 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<div class="admin-header">
+  <div>
+    <h1 class="admin-header-title">Operational Telemetry</h1>
+    <p class="admin-header-subtitle">Studio content distribution, release verification states, and publishing pipeline status.</p>
+  </div>
+  <div style="display: flex; gap: 10px;">
+    <a href="{{ url_for('admin.publishing_center') }}" class="btn-noir-admin">⚡ Publishing Center</a>
+    <a href="{{ url_for('admin.game_create') }}" class="btn-noir-secondary">+ New Project</a>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">Published Works</div>
+    <div class="stat-number">{{ total_games }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Software Products</div>
+    <div class="stat-number">{{ total_software }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Active Releases</div>
+    <div class="stat-number">{{ total_releases }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Draft Changes</div>
+    <div class="stat-number" style="color: var(--admin-status-draft);">{{ draft_changes_count }}</div>
+  </div>
+</div>
+
+<!-- Release & Publishing Status Banner -->
+<div class="admin-card" style="border-left: 4px solid var(--admin-accent-violet);">
+  <div class="admin-card-header">
+    <h2 class="admin-card-title">Production Release Status — Avenor</h2>
+    <span class="badge {% if current_release and current_release.is_live %}badge-live{% else %}badge-draft{% endif %}">
+      {% if current_release and current_release.is_live %}LIVE IN PRODUCTION{% else %}STAGING / PRE-RELEASE{% endif %}
+    </span>
+  </div>
+  {% if current_release %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; font-size: 0.85rem; color: var(--admin-text-silver);">
+      <div><strong>Version:</strong> {{ current_release.version }}</div>
+      <div><strong>Channel:</strong> {{ current_release.release_channel }}</div>
+      <div><strong>Standard SHA-256:</strong> <code style="font-family: var(--font-mono); font-size: 0.75rem;">{{ current_release.standard_sha256[:16] }}...</code></div>
+      <div><strong>Verification Gate:</strong> 
+        {% if current_release.backend_verified %}
+          <span style="color: var(--admin-status-live);">✓ Backend Verified</span>
+        {% else %}
+          <span style="color: var(--admin-status-danger);">⚠ Unverified</span>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <p style="color: var(--admin-text-muted); font-size: 0.88rem; margin: 0;">No active software release configured.</p>
+  {% endif %}
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+  <!-- Recent Audit Log -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">Recent Operator Dispatches</h2>
+    </div>
+    {% if recent_audit_logs %}
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        {% for log in recent_audit_logs %}
+          <div style="background: var(--admin-bg-elevated); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--admin-border); font-size: 0.82rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: 600; color: var(--admin-text-platinum);">{{ log.username }}</span>
+              <span style="font-family: var(--font-mono); color: var(--admin-text-muted);">{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+            <div style="color: var(--admin-accent-iris);">{{ log.action }} {% if log.target_id %}[{{ log.target_id }}]{% endif %}</div>
+            {% if log.details %}<div style="color: var(--admin-text-muted); font-size: 0.78rem; margin-top: 2px;">{{ log.details }}</div>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color: var(--admin-text-muted); font-size: 0.88rem;">No administrative audit dispatches recorded yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Inbound Inquiries -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <h2 class="admin-card-title">Inbound Inquiries</h2>
+      <a href="{{ url_for('admin.inquiries_list') }}" class="btn-noir-secondary" style="font-size: 0.78rem;">View All</a>
+    </div>
+    {% if recent_inquiries %}
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        {% for inq in recent_inquiries %}
+          <div style="background: var(--admin-bg-elevated); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--admin-border); font-size: 0.82rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span style="font-weight: 600; color: var(--admin-text-platinum);">{{ inq.name }}</span>
+              <span class="badge {% if inq.status == 'new' %}badge-draft{% else %}badge-live{% endif %}">{{ inq.status }}</span>
+            </div>
+            <div style="color: var(--admin-text-silver);">{{ inq.subject }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color: var(--admin-text-muted); font-size: 0.88rem;">No pending inquiries.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

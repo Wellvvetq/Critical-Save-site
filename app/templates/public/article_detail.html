@@ -1,0 +1,58 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<div class="container project-breadcrumb-strip">
+  <a href="{{ url_for('public.news', lang=current_lang) }}" class="breadcrumb-back">
+    <span class="back-arrow">←</span> {{ t('back_to_news') }}
+  </a>
+  <span class="breadcrumb-dossier-id">[ JOURNAL // DISPATCH DOSSIER // {{ article.slug|upper }} ]</span>
+</div>
+
+<article class="container article-editorial-container">
+  <header class="article-editorial-header">
+    <div class="article-meta-ribbon">
+      <span class="meta-tag-category">{{ article.get_category(current_lang) }}</span>
+      <span class="meta-divider">//</span>
+      <span class="meta-tag-time">{{ article.reading_time_minutes }} {{ t('reading_time') }}</span>
+      <span class="meta-divider">//</span>
+      <span class="meta-tag-author">{{ t('by_author') }} {{ article.author }}</span>
+    </div>
+
+    <h1 class="article-headline-giant">{{ article.get_title(current_lang) }}</h1>
+
+    {% if article.get_excerpt(current_lang) %}
+      <div class="article-lead-pullquote">
+        <p>{{ article.get_excerpt(current_lang) }}</p>
+      </div>
+    {% endif %}
+  </header>
+
+  {% if article.cover_image %}
+    <div class="article-featured-media-frame">
+      <div class="media-telemetry-strip">
+        <span>ARCHIVE CAPTURE // DISPATCH VISUAL</span>
+        <span>SECTOR: 07-CSS</span>
+      </div>
+      <img src="{{ article.cover_image }}" alt="{{ article.get_title(current_lang) }}" loading="eager">
+    </div>
+  {% endif %}
+
+  <div class="article-editorial-body">
+    {{ article.get_content(current_lang) }}
+  </div>
+
+  <footer class="article-editorial-footer">
+    <div class="footer-meta-block">
+      <span class="meta-pub-date">
+        {{ t('published_on') }} {{ article.created_at.strftime('%Y-%m-%d') }}
+      </span>
+      <span class="meta-security-stamp">[CRITICAL SAVE VERIFIED DISPATCH]</span>
+    </div>
+    <div>
+      <a href="{{ url_for('public.news', lang=current_lang) }}" class="btn btn-secondary btn-sm">
+        {{ t('back_to_news') }}
+      </a>
+    </div>
+  </footer>
+</article>
+{% endblock %}
