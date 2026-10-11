@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Studio Test Suites & Verification Gates
         run: |
-          pytest tests/test_studio_control_center.py tests/test_suite.py -v
+          python -m pytest tests/test_studio_control_center.py tests/test_suite.py -v
 
       - name: Freeze & Export Static Critical Noir Site
         run: |
