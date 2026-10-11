@@ -388,6 +388,60 @@ TRANSLATIONS = {
     }
 }
 
+def get_page_content_overrides() -> dict:
+    """
+    Retrieves all published page content overrides grouped by language.
+    Cached on Flask `g` within the request/application context to prevent redundant DB queries.
+    Only published data is returned; drafts are never exposed.
+    """
+    try:
+        from flask import has_app_context, g
+        if not has_app_context():
+            return {}
+
+        if hasattr(g, "_page_content_overrides"):
+            return g._page_content_overrides
+
+        from app.services.db import get_db
+        from app.models import PageContent
+        db = get_db()
+        if not db or not db.session:
+            return {}
+
+        overrides = {"en": {}, "ru": {}}
+        pages = db.session.query(PageContent).all()
+        for p in pages:
+            data = p.get_published()
+            if not isinstance(data, dict):
+                continue
+            for k, val in data.items():
+                if val is None or val == "":
+                    continue
+                # Support both suffixed keys ('about_title_en') and language-agnostic keys
+                if k.endswith("_en"):
+                    base_k = k[:-3]
+                    overrides["en"][base_k] = val
+                    overrides["en"][k] = val
+                elif k.endswith("_ru"):
+                    base_k = k[:-3]
+                    overrides["ru"][base_k] = val
+                    overrides["ru"][k] = val
+                else:
+                    overrides["en"][k] = val
+                    overrides["ru"][k] = val
+
+        g._page_content_overrides = overrides
+        return overrides
+    except Exception:
+        return {}
+
+
 def t(key: str, lang: str = "en") -> str:
+    # 1. Check published PageContent overrides first
+    overrides = get_page_content_overrides()
+    if overrides and lang in overrides and key in overrides[lang]:
+        return str(overrides[lang][key])
+
+    # 2. Fallback to hardcoded TRANSLATIONS dictionary
     lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS["en"])
     return lang_dict.get(key, TRANSLATIONS["en"].get(key, key))

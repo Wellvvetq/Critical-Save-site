@@ -499,11 +499,33 @@ def page_edit(page_key):
         draft_raw = request.form.get("draft_data_json", "{}").strip()
         
         try:
-            parsed = json.loads(draft_raw)
-            formatted = json.dumps(parsed, indent=2, ensure_ascii=False)
+            parsed = json.loads(draft_raw) if draft_raw else {}
+            if not isinstance(parsed, dict):
+                parsed = {}
         except Exception as e:
             flash(f"Invalid JSON block structure: {e}", "danger")
-            return render_template("admin/page_form.html", page=page, draft_json_str=draft_raw)
+            return render_template("admin/page_form.html", page=page, draft_json_str=draft_raw, draft_dict=page.get_draft() or page.get_published())
+
+        # For home page, merge known visual editor form fields preserving unmanaged keys
+        if page.page_key == "home":
+            home_fields = [
+                "hero_badge_en", "hero_badge_ru",
+                "hero_headline_1_en", "hero_headline_1_ru",
+                "hero_headline_2_en", "hero_headline_2_ru",
+                "hero_subheadline_en", "hero_subheadline_ru",
+                "hero_cta_games_en", "hero_cta_games_ru",
+                "hero_cta_software_en", "hero_cta_software_ru",
+            ]
+            for fld in home_fields:
+                if fld in request.form:
+                    val = request.form.get(fld, "").strip()
+                    if val != "":
+                        parsed[fld] = val
+                    elif fld in parsed:
+                        # Allow clearing if submitted empty
+                        del parsed[fld]
+
+        formatted = json.dumps(parsed, indent=2, ensure_ascii=False)
             
         page.title_en = title_en
         page.title_ru = title_ru
@@ -542,7 +564,7 @@ def page_edit(page_key):
         
     draft_dict = page.get_draft() or page.get_published()
     draft_json_str = json.dumps(draft_dict, indent=2, ensure_ascii=False)
-    return render_template("admin/page_form.html", page=page, draft_json_str=draft_json_str)
+    return render_template("admin/page_form.html", page=page, draft_json_str=draft_json_str, draft_dict=draft_dict)
 
 
 # --- SOFTWARE PRODUCTS CRUD ---
